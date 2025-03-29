@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: phone number
+            tableName: user
+      id: 2
+      author: t.fontep

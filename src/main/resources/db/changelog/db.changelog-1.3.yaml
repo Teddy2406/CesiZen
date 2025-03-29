@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: t.fontep
+      changes:
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: username
+                  value: Ted
+              - column:
+                  name: role
+                  value: ADMIN
+              - column:
+                  name: email
+                  value: tfontep@gmail.com
+              - column:
+                  name: password
+                  value: Teddy123
+              - column:
+                  name: phone_number
+                  value: 0620356854

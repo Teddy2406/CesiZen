@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  zen:
+    image: 'postgres:16-alpine'
+    volumes:
+      - ./postgres-init.sh:/docker-entrypoint-initdb.d/postgres-init.sh
+    environment:
+      - 'POSTGRES_DB=basecesizen'
+      - 'POSTGRES_PASSWORD=mystere'
+      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_SCHEMA=ZEN_SCHEMA'
+    ports:
+      - '5432:5432'
+
+  backend:
+    build: ./Back-end-zen/
+    ports:
+      - '8080:8080'
+
+  frontend:
+    build: ./Zen/
+    ports:
+      - '4200:4200'

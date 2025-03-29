@@ -1,0 +1,14 @@
+get:
+  tags:
+    - user
+  summary: récuperer les users
+  operationId: getAllUser
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../components/userDto.yaml#/UserDto'

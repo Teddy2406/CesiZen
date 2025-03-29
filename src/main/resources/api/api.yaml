@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: CartesAPI
+  version: 1.0.0
+  description: Les api cartes
+servers:
+  - url: http://localhost:8081
+    description: Local server
+paths:
+  #
+
+  /api/user:
+    $ref: './user/user.yaml'
+
+  /api/user/{id}:
+    $ref: './user/userUpdate.yaml'
