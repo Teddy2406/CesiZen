@@ -1,12 +1,14 @@
 package com.CesiZen.CesiZen.controller;
 
 import com.CesiZen.CesiZen.model.UserEntity;
+import com.CesiZen.CesiZen.payload.ChangePasswordRequest;
 import com.CesiZen.CesiZen.service.UserService;
 import com.CesiZen.CesiZen.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.gen.api.UserApi;
 import org.openapitools.gen.dto.UserDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,4 +42,20 @@ public class UserController implements UserApi {
     public ResponseEntity<UserDto> updateUser(@PathVariable Integer id) {
         return ResponseEntity.ok(userService.updateUser(id.longValue()));
     }
+    @PutMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
+        try {
+            String result = userServiceImpl.changePassword(
+                    request.getOldPassword(),
+                    request.getNewPassword()
+            );
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException | UsernameNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Une erreur s'est produite lors de la modification du mot de passe.");
+        }
+    }
+
 }

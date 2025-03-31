@@ -8,6 +8,8 @@ import org.openapitools.gen.dto.UserDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -85,4 +87,30 @@ public class UserServiceImpl implements UserService {
         UserEntity updatedUserEntity = userRepository.save(userEntity);
         return userMapper.mapUserEntityToUserDto(updatedUserEntity) ;
     }
+
+    public String changePassword(String oldPassword, String newPassword) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new IllegalStateException("Aucun utilisateur n'est actuellement authentifié.");
+        }
+
+        String username = authentication.getName();
+
+        UserEntity user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Aucun utilisateur trouvé pour le nom : " + username);
+        }
+
+        if (!encoder.matches(oldPassword, user.getPassword())) {
+            throw new IllegalArgumentException("L'ancien mot de passe est incorrect.");
+        }
+
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+
+        return "Mot de passe modifié avec succès !";
+    }
 }
+
+
+
