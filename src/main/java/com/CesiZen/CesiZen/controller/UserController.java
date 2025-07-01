@@ -35,17 +35,23 @@ public class UserController implements UserApi {
     }
 
     @Override
+    public ResponseEntity<Void> deleteUserById(Integer id) {
+        userService.deleteUserById(Long.valueOf(id));
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
     public ResponseEntity<List<UserDto>> getAllUser() {return ResponseEntity.ok(userService.getAllUser());
     }
 
     @Override
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.getUserById(id.longValue()));
     }
 
     @Override
-    public ResponseEntity<UserDto> updateUser(@PathVariable Integer id) {
-        return ResponseEntity.ok(userService.updateUser(id.longValue()));
+    public ResponseEntity<UserDto> updateUser(@PathVariable Integer id, @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.updateUser(id.longValue(), userDto));
     }
     @PutMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {

@@ -1,6 +1,6 @@
 UserDto:
   properties:
-    userid:
+    userId:
       type: long
     username:
       type: string

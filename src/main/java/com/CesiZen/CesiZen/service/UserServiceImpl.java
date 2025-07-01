@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
         for (UserEntity userEntity : userEntityList) {
             UserDto usersDto = new UserDto()
-                    .userid(userEntity.getId())
+                    .userId(userEntity.getId())
                     .username(userEntity.getUsername())
                     .role(userEntity.getRole())
                     .email(userEntity.getEmail())
@@ -71,21 +71,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(Long id) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+    public UserDto updateUser(Long id, UserDto userDto) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
+        if (Objects.nonNull(userDto.getUsername())) {
+            userEntity.setUsername(userDto.getUsername());
+        }
+        if (Objects.nonNull(userDto.getRole())) {
+            userEntity.setRole(userDto.getRole());
+        }
+        if (Objects.nonNull(userDto.getEmail())) {
+            userEntity.setEmail(userDto.getEmail());
+        }
+        if (Objects.nonNull(userDto.getPhoneNumber())) {
+            userEntity.setPhone_number(userDto.getPhoneNumber());
+        }
+        UserEntity updatedUserEntity = userRepository.save(userEntity);
+        return userMapper.mapUserEntityToUserDto(updatedUserEntity) ;
+    }
 
-            UserEntity updatedUserEntity = userRepository.save(userEntity);
+    @Override
+    public UserDto getUserById(Long id) {
+
+        Optional<UserEntity> verfiUserEntity = userRepository.findById(id);
+
+        if (verfiUserEntity.isPresent()) {
+            UserEntity userEntity = verfiUserEntity.get();
 
             UserDto userDto = new UserDto()
-                    .userid(updatedUserEntity.getId())
-                    .username(updatedUserEntity.getUsername())
-                    .role(updatedUserEntity.getRole())
-                    .email(updatedUserEntity.getEmail())
-                    .password(updatedUserEntity.getPassword())
-                    .phoneNumber(updatedUserEntity.getPhone_number());
+                    .userId(userEntity.getId())
+                    .username(userEntity.getUsername())
+                    .role(userEntity.getRole())
+                    .email(userEntity.getEmail())
+                    .password(userEntity.getPassword())
+                    .phoneNumber(userEntity.getPhone_number());
 
             return userDto;
         } else {
@@ -94,31 +114,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(Long id) {
-        System.out.println("=== DEBUG getUserById ===");
-        System.out.println("ID recherché: " + id);
-
-        Optional<UserEntity> verfiUserEntity = userRepository.findById(id);
-        System.out.println("Optional présent? " + verfiUserEntity.isPresent());
-
-        if (verfiUserEntity.isPresent()) {
-            UserEntity userEntity = verfiUserEntity.get();
-            System.out.println("Utilisateur trouvé: " + userEntity.getUsername());
-
-            UserDto userDto = new UserDto()
-                    .userid(userEntity.getId())
-                    .username(userEntity.getUsername())
-                    .role(userEntity.getRole())
-                    .email(userEntity.getEmail())
-                    .password(userEntity.getPassword())
-                    .phoneNumber(userEntity.getPhone_number());
-
-            System.out.println("UserDto créé avec username: " + userDto.getUsername());
-            return userDto;
-        } else {
-            System.out.println("Utilisateur non trouvé!");
-            throw new EntityNotFoundException("UserEntity not found for id: " + id);
-        }
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 
     public String changePassword(String oldPassword, String newPassword) {
