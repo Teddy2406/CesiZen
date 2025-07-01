@@ -1,0 +1,17 @@
+post:
+  tags:
+    - login
+  summary: se connecter
+  operationId: login
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/loginDto.yaml#/LoginDto'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/loginDto.yaml#/LoginDto'

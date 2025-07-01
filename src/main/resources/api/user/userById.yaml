@@ -1,0 +1,39 @@
+get:
+  tags:
+    - user
+  summary: récupérer un utilisateur par ID
+  operationId: getUserById
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+  responses:
+    '200':
+      description: Utilisateur trouvé
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/userDto.yaml#/UserDto'
+    '404':
+      description: Utilisateur non trouvé
+
+patch:
+  tags:
+    - user
+  summary: modifier role
+  operationId: updateUser
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/userDto.yaml#/UserDto'

@@ -39,6 +39,11 @@ public class UserController implements UserApi {
     }
 
     @Override
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @Override
     public ResponseEntity<UserDto> updateUser(@PathVariable Integer id) {
         return ResponseEntity.ok(userService.updateUser(id.longValue()));
     }

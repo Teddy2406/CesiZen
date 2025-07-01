@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@angular/animations": "^20.0.5",
+    "jwt-decode": "^4.0.0"
+  }
+}

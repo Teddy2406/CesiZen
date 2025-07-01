@@ -3,6 +3,7 @@ package com.CesiZen.CesiZen.service;
 import com.CesiZen.CesiZen.mapper.UserMapper;
 import com.CesiZen.CesiZen.model.UserEntity;
 import com.CesiZen.CesiZen.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.gen.dto.UserDto;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,22 +72,53 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(Long id) {
-        UserEntity userEntity = userRepository.findById(Math.toIntExact(id)).orElseThrow();
-        UserDto userDto = new UserDto();
-        if (Objects.nonNull(userDto.getUsername())) {
-            userEntity.setUsername(userDto.getUsername());
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
+
+            UserEntity updatedUserEntity = userRepository.save(userEntity);
+
+            UserDto userDto = new UserDto()
+                    .userid(updatedUserEntity.getId())
+                    .username(updatedUserEntity.getUsername())
+                    .role(updatedUserEntity.getRole())
+                    .email(updatedUserEntity.getEmail())
+                    .password(updatedUserEntity.getPassword())
+                    .phoneNumber(updatedUserEntity.getPhone_number());
+
+            return userDto;
+        } else {
+            throw new EntityNotFoundException("UserEntity not found for id: " + id);
         }
-        if (Objects.nonNull(userDto.getRole())) {
-            userEntity.setRole(userDto.getRole());
+    }
+
+    @Override
+    public UserDto getUserById(Long id) {
+        System.out.println("=== DEBUG getUserById ===");
+        System.out.println("ID recherché: " + id);
+
+        Optional<UserEntity> verfiUserEntity = userRepository.findById(id);
+        System.out.println("Optional présent? " + verfiUserEntity.isPresent());
+
+        if (verfiUserEntity.isPresent()) {
+            UserEntity userEntity = verfiUserEntity.get();
+            System.out.println("Utilisateur trouvé: " + userEntity.getUsername());
+
+            UserDto userDto = new UserDto()
+                    .userid(userEntity.getId())
+                    .username(userEntity.getUsername())
+                    .role(userEntity.getRole())
+                    .email(userEntity.getEmail())
+                    .password(userEntity.getPassword())
+                    .phoneNumber(userEntity.getPhone_number());
+
+            System.out.println("UserDto créé avec username: " + userDto.getUsername());
+            return userDto;
+        } else {
+            System.out.println("Utilisateur non trouvé!");
+            throw new EntityNotFoundException("UserEntity not found for id: " + id);
         }
-        if (Objects.nonNull(userDto.getEmail())) {
-            userEntity.setEmail(userDto.getEmail());
-        }
-        if (Objects.nonNull(userDto.getPhoneNumber())) {
-            userEntity.setPhone_number(userDto.getPhoneNumber());
-        }
-        UserEntity updatedUserEntity = userRepository.save(userEntity);
-        return userMapper.mapUserEntityToUserDto(updatedUserEntity) ;
     }
 
     public String changePassword(String oldPassword, String newPassword) {

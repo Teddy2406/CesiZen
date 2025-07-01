@@ -1,0 +1,17 @@
+post:
+  tags:
+    - register
+  summary: inscription
+  operationId: register
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/registerDto.yaml#/RegisterDto'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/registerDto.yaml#/RegisterDto'

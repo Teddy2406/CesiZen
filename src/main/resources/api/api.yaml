@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  title: CartesAPI
+  title: CesiZen
   version: 1.0.0
-  description: Les api cartes
+  description: API pour CesiZen
 servers:
   - url: http://localhost:8081
     description: Local server
@@ -13,4 +13,10 @@ paths:
     $ref: './user/user.yaml'
 
   /api/user/{id}:
-    $ref: './user/userUpdate.yaml'
+    $ref: './user/userById.yaml'
+
+  /api/login:
+    $ref: './login/login.yaml'
+
+  /api/register:
+    $ref: './register/register.yaml'
