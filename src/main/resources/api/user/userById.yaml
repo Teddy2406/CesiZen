@@ -16,10 +16,9 @@ get:
         application/json:
           schema:
             $ref: '../../components/userDto.yaml#/UserDto'
-    '404':
-      description: Utilisateur non trouvé
 
-patch:
+
+put:
   tags:
     - user
   summary: modifier role
@@ -30,6 +29,12 @@ patch:
       schema:
         type: integer
       required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/userDto.yaml#/UserDto'
   responses:
     '200':
       description: OK
@@ -37,3 +42,6 @@ patch:
         application/json:
           schema:
             $ref: '../../components/userDto.yaml#/UserDto'
+
+
+

@@ -8,7 +8,7 @@ import org.openapitools.gen.dto.UserDto;
 public class UserMapper {
     public UserDto mapUserEntityToUserDto(UserEntity userEntity) {
         return new UserDto()
-                .userid(userEntity.getId())
+                .userId(userEntity.getId())
                 .username(userEntity.getUsername())
                 .role(userEntity.getRole())
                 .email(userEntity.getEmail())
