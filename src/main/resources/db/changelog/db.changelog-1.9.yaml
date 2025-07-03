@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10
+      author: t.fontep
+      changes:
+        - createTable:
+            tableName: respiration
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_respiration
+                  name: id
+                  type: serial
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: inhaleTime
+                  type: integer
+              - column:
+                  name: holdTime
+                  type: integer
+              - column:
+                  name: exhaleTime
+                  type: integer
+              - column:
+                  name: cycles
+                  type: integer
+              - column:
+                  name: duration
+                  type: integer
+              - column:
+                  name: icon
+                  type: varchar(255)
+              - column:
+                  name: difficulty
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+
