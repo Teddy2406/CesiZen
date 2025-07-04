@@ -1,0 +1,17 @@
+delete:
+  tags:
+    - ressource
+  summary: Supprimer une ressource
+  operationId: deleteRessourceById
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+      description: Identifiant unique de la ressource
+  responses:
+    '200':
+      description: ressource supprimée avec succès
+    '404':
+      description: ressource non trouvée

@@ -1,0 +1,24 @@
+put:
+  tags:
+    - ressource
+  summary: modifier une ressource
+  operationId: updateRessource
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/ressourceDto.yaml#/RessourceDto'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/ressourceDto.yaml#/RessourceDto'

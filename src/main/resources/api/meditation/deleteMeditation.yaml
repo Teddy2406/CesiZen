@@ -1,0 +1,17 @@
+delete:
+  tags:
+    - meditation
+  summary: Supprimer un exo de meditation
+  operationId: deleteMeditationById
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+      description: Identifiant unique de l'exo meditation
+  responses:
+    '200':
+      description: exo de meditation supprimée avec succès
+    '404':
+      description: exo de meditation non trouvée

@@ -1,0 +1,30 @@
+RespirationDto:
+  properties:
+    respirationId:
+      type: long
+    name:
+      type: string
+    description:
+      type: string
+    inhaleTime:
+      type: integer
+      minimum: 1
+      maximum: 30
+    holdTime:
+      type: integer
+      minimum: 0
+      maximum: 30
+    exhaleTime:
+      type: integer
+      minimum: 1
+      maximum: 30
+    cycles:
+      type: integer
+      minimum: 1
+      maximum: 50
+    duration:
+      type: integer
+      minimum: 1
+      maximum: 60
+    difficulty:
+      type: string
