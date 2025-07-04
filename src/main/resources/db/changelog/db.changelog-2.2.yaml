@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: icon
+            tableName: respiration
+      id: 13
+      author: t.fontep

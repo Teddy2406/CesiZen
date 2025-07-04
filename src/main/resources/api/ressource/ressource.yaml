@@ -1,0 +1,35 @@
+get:
+  tags:
+    - ressource
+  summary: récuperer les ressources
+  operationId: getAllRessource
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../components/ressourceDto.yaml#/RessourceDto'
+
+
+
+
+post:
+  tags:
+    - ressource
+  summary: création
+  operationId: AddRessource
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/ressourceDto.yaml#/RessourceDto'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/ressourceDto.yaml#/RessourceDto'

@@ -1,0 +1,34 @@
+MeditationDto:
+  properties:
+    meditationId:
+      type: long
+    title:
+      type: string
+    description:
+      type: string
+    theme:
+      type: string
+      enum: ["Pleine Conscience", "Anti-Stress", "Sommeil", "Concentration", "Confiance", "Gratitude"]
+    duration:
+      type: integer
+      minimum: 1
+      maximum: 120
+    difficulty:
+      type: string
+      enum: ["Débutant", "Intermédiaire", "Avancé"]
+    instructor:
+      type: string
+    audioUrl:
+      type: string
+      format: uri
+    image:
+      type: string
+      format: uri
+    tags:
+      type: array
+      items:
+        type: string
+    benefits:
+      type: array
+      items:
+        type: string

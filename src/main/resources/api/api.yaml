@@ -18,8 +18,43 @@ paths:
   /api/user{id}:
     $ref: './user/deleteUser.yaml'
 
+
   /api/login:
     $ref: './login/login.yaml'
 
+
   /api/register:
     $ref: './register/register.yaml'
+
+
+
+  /api/ressource:
+    $ref: './ressource/ressource.yaml'
+
+  /api/ressource/{id}:
+    $ref: './ressource/updateRessource.yaml'
+
+  /api/ressource{id}:
+    $ref: './ressource/deleteRessource.yaml'
+
+
+
+  /api/respiration:
+    $ref: './respiration/respiration.yaml'
+
+  /api/respiration/{id}:
+    $ref: './respiration/updateRespiration.yaml'
+
+  /api/respiration{id}:
+    $ref: './respiration/deleteRespiration.yaml'
+
+
+
+  /api/meditation:
+    $ref: './meditation/meditation.yaml'
+
+  /api/meditation/{id}:
+    $ref: './meditation/updateMeditation.yaml'
+
+  /api/meditation{id}:
+    $ref: './meditation/deleteMeditation.yaml'

@@ -1,0 +1,28 @@
+RessourceDto:
+  properties:
+    id:
+      type: long
+      description: "Identifiant unique de la ressource"
+    titre:
+      type: string
+      description: "Titre de la ressource"
+    description:
+      type: string
+      description: "Description du contenu"
+    contenu:
+      type: string
+      description: "Contenu textuel de la ressource"
+    theme:
+      type: string
+      description: "Thème de la ressource"
+    imageUrl:
+      type: string
+      format: uri
+      description: "URL de l'image de la ressource"
+    datePublication:
+      type: string
+      format: date-time
+      description: "Date de publication"
+    tempsLecture:
+      type: string
+      description: "Temps de lecture estimé"

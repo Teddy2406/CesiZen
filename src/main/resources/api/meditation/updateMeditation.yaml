@@ -1,0 +1,24 @@
+put:
+  tags:
+    - meditation
+  summary: modifier un exo de meditation
+  operationId: updateMeditation
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/meditationDto.yaml#/MeditationDto'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/meditationDto.yaml#/MeditationDto'
