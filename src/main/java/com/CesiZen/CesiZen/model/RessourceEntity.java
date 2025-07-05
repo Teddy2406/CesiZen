@@ -30,9 +30,6 @@ public class RessourceEntity {
     @Column(length = 100)
     private String theme;
 
-    @Column(length = 500)
-    private String imageUrl;
-
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime datePublication;
 
@@ -46,7 +43,6 @@ public class RessourceEntity {
         this.description = description;
         this.contenu = contenu;
         this.theme = theme;
-        this.imageUrl = imageUrl;
         this.datePublication = LocalDateTime.now();
         this.tempsLecture = tempsLecture;
     }
