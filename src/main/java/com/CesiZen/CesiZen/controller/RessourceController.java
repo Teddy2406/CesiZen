@@ -1,7 +1,6 @@
 package com.CesiZen.CesiZen.controller;
 
 import com.CesiZen.CesiZen.service.RessourceService;
-import com.CesiZen.CesiZen.service.RessourceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.gen.api.RessourceApi;
 import org.openapitools.gen.dto.RessourceDto;

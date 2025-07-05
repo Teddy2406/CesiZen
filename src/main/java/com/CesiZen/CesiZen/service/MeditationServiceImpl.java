@@ -3,7 +3,6 @@ package com.CesiZen.CesiZen.service;
 import com.CesiZen.CesiZen.mapper.MeditationMapper;
 import com.CesiZen.CesiZen.model.MeditationEntity;
 import com.CesiZen.CesiZen.repository.MeditationRepository;
-import com.CesiZen.CesiZen.repository.RessourceRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.gen.dto.MeditationDto;
