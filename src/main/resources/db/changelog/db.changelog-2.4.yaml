@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: image_url
+            tableName: ressources
+      id: 15
+      author: t.fontep

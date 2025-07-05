@@ -15,10 +15,6 @@ RessourceDto:
     theme:
       type: string
       description: "Thème de la ressource"
-    imageUrl:
-      type: string
-      format: uri
-      description: "URL de l'image de la ressource"
     datePublication:
       type: string
       format: date-time

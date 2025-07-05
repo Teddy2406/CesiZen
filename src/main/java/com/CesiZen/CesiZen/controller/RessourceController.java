@@ -20,7 +20,6 @@ import java.util.Optional;
 public class RessourceController implements RessourceApi {
 
     private final RessourceService ressourceService;
-    private final RessourceServiceImpl ressourceServiceImpl;
 
     @Override
     public ResponseEntity<RessourceDto> addRessource(@RequestBody RessourceDto ressourceDto) {
