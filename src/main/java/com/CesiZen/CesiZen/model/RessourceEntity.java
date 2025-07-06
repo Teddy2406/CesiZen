@@ -34,11 +34,11 @@ public class RessourceEntity {
     private LocalDateTime datePublication;
 
     @Column(length = 100)
-    private String tempsLecture;
+    private Long tempsLecture;
 
     // Constructeur personnalisé pour la création
 
-    public RessourceEntity(String titre, String description, String contenu, String theme, String tempsLecture) {
+    public RessourceEntity(String titre, String description, String contenu, String theme, Long tempsLecture) {
         this.titre = titre;
         this.description = description;
         this.contenu = contenu;

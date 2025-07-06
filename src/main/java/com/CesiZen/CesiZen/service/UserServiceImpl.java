@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         if (authentication.isAuthenticated()) {
             UserEntity user = userRepository.findByUsername(userEntity.getUsername());
-            return jwtService.generateToken(user.getUsername(), user.getRole());
+            return jwtService.generateToken(user.getUsername(), user.getRole(), user.getId());
         }
         return "Fail";
     }

@@ -43,5 +43,22 @@ put:
           schema:
             $ref: '../../components/userDto.yaml#/UserDto'
 
+delete:
+  tags:
+    - user
+  summary: Supprimer un utilisateur
+  operationId: deleteUserById
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+      description: Identifiant unique de l'utilisateur à supprimer
+  responses:
+    '200':
+      description: Utilisateur supprimée avec succès
+    '404':
+      description: Utilisateur non trouvée
 
 
