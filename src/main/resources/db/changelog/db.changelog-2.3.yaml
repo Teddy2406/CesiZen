@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: audioUrl
+              - column:
+                  name: image
+              - column:
+                  name: tags
+              - column:
+                  name: benefits
+            tableName: meditation
+      id: 14
+      author: t.fontep

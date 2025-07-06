@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: 11
+      author: t.fontep
+      changes:
+        - createTable:
+            tableName: meditation
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_meditation
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: theme
+                  type: varchar(100)
+              - column:
+                  name: duration
+                  type: integer
+              - column:
+                  name: difficulty
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: instructor
+                  type: varchar(255)
+              - column:
+                  name: audioUrl
+                  type: varchar(500)
+              - column:
+                  name: image
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tags
+                  type: text[]
+              - column:
+                  name: benefits
+                  type: text[]

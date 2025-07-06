@@ -1,0 +1,17 @@
+delete:
+  tags:
+    - respiration
+  summary: Supprimer un utilisateur
+  operationId: deleteRespirationById
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+      description: Identifiant unique de l'exo respiration
+  responses:
+    '200':
+      description: exo respiration supprimée avec succès
+    '404':
+      description: exo respiration non trouvée

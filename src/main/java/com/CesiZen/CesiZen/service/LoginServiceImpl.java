@@ -27,7 +27,7 @@ public class LoginServiceImpl implements LoginService {
 
         if (authentication.isAuthenticated()) {
             UserEntity user = userRepository.findByUsername(userEntity.getUsername());
-            return jwtService.generateToken(user.getUsername(), user.getRole());
+            return jwtService.generateToken(user.getUsername(), user.getRole(), user.getId());
         } else {
             throw new BadCredentialsException("Invalid username or password");
         }

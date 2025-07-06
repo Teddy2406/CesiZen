@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 12
+      author: t.fontep
+      changes:
+        - createTable:
+            tableName: ressources
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_ressources
+              - column:
+                  name: titre
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: contenu
+                  type: text
+              - column:
+                  name: theme
+                  type: varchar(100)
+              - column:
+                  name: imageUrl
+                  type: varchar(500)
+              - column:
+                  name: datePublication
+                  type: TIMESTAMP WITH TIME ZONE
+              - column:
+                  name: tempsLecture
+                  type: varchar(100)
