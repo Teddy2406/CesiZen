@@ -29,13 +29,13 @@ public class JWTService {
         }
     }
 
-    public String generateToken(String username, String role) {
-        Map<String, Object> claims = Map.of("role", role);
+    public String generateToken(String username, String role, Long id) {
+        Map<String, Object> claims = Map.of("role", role,  "id", id);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(getKey())
                 .compact();
     }

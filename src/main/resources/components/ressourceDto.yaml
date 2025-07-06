@@ -20,5 +20,5 @@ RessourceDto:
       format: date-time
       description: "Date de publication"
     tempsLecture:
-      type: string
+      type: long
       description: "Temps de lecture estimé"
