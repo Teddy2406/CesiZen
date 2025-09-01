@@ -47,6 +47,9 @@ jobs:
           done
 
       # compile + tests (OpenAPI est généré à generate-sources, cf. ton pom)
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+
       - name: Build & Test
         run: ./mvnw -B clean verify --no-transfer-progress
 
