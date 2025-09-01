@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "http://frontend:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://frontend:4200","http://localhost:8082"})
 public class RessourceController implements RessourceApi {
 
     private final RessourceService ressourceService;

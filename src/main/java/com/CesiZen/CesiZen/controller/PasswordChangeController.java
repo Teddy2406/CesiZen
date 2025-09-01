@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "http://frontend:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://frontend:4200","http://localhost:8082"})
 public class PasswordChangeController {
 
     private final PasswordChangeServiceImpl passwordChangeServiceImpl;
