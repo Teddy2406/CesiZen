@@ -120,6 +120,7 @@
 				<version>7.1.0</version>
 				<executions>
 					<execution>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>generate</goal>
 						</goals>
@@ -144,5 +145,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/OWNER/REPO</url>
+		</repository>
+	</distributionManagement>
 
 </project>

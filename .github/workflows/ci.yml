@@ -1,0 +1,127 @@
+name: CI - Build, Test, Docker
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  backend:
+    name: Backend - Maven (Java 21, DB intégration)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: basecesizen
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mystere
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U myuser -d basecesizen"
+          --health-interval=10s --health-timeout=5s --health-retries=5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Temurin JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..12}; do
+            nc -z localhost 5432 && echo "DB ready" && break
+            echo "waiting db ($i/12)..." && sleep 5
+          done
+
+      # compile + tests (OpenAPI est généré à generate-sources, cf. ton pom)
+      - name: Build & Test
+        run: ./mvnw -B clean verify --no-transfer-progress
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: cesizen-api-jar
+          path: target/*.jar
+
+  # Si tu as un front à la racine. Sinon ajoute working-directory pour pointer vers le dossier front.
+  frontend:
+    name: Frontend - Lint, Test, Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Test
+        run: npm test --if-present
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Upload dist
+        if: ${{ hashFiles('dist/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cesizen-frontend-dist
+          path: dist/
+
+  docker:
+    name: Docker - Build & Push (GHCR)
+    runs-on: ubuntu-latest
+    needs: [backend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute image meta
+        id: meta
+        run: |
+          IMAGE=ghcr.io/${{ github.repository }}/cesizen-api
+          if [[ "${GITHUB_REF##*/}" == "main" ]]; then
+            TAG=latest
+          else
+            TAG=${GITHUB_REF##*/}-${GITHUB_SHA::7}
+          fi
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Login GHCR (main/develop)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build image
+        run: |
+          docker build --pull \
+            -t ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }} \
+            .
+        # Si Dockerfile ailleurs: ajouter -f chemin/Dockerfile
+
+      - name: Push (main/develop)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+        run: docker push ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
