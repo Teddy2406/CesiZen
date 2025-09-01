@@ -50,8 +50,25 @@ jobs:
       - name: Make mvnw executable
         run: chmod +x mvnw
 
-      - name: Build & Test
-        run: ./mvnw -B clean verify --no-transfer-progress
+      - name: Build & Test (verbose)
+        env:
+          SPRING_PROFILES_ACTIVE: test
+        run: |
+          ./mvnw -B -e -X -DtrimStackTrace=false clean test --no-transfer-progress
+
+      - name: Dump Surefire reports
+        if: always()
+        run: |
+          echo "==== surefire-reports ===="
+          if [ -d target/surefire-reports ]; then
+            for f in target/surefire-reports/*; do
+              echo "---- $f ----"
+              cat "$f" || true
+              echo
+            done
+          else
+            echo "Pas de dossier target/surefire-reports"
+          fi
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
