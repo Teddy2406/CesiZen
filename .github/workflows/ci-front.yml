@@ -1,0 +1,57 @@
+name: CI • Build • Test • Docker • Deploy
+
+on:
+  push:
+    branches: [ main]
+  pull_request:
+    branches: [ main]
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/cesizen-api
+
+jobs:
+  frontend:
+    name: Frontend • Lint • Test • Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # change ici si ton front est dans un sous-dossier, ex. frontend/
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Test
+        run: npm test --if-present
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Upload dist
+        if: ${{ hashFiles('dist/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cesizen-frontend-dist
+          path: dist/
+
