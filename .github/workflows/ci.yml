@@ -1,18 +1,26 @@
-name: CI - Build, Test, Docker
+name: CI • Build • Test • Docker • Deploy
 
 on:
   push:
-    branches: [ main, feature/api]
+    branches: [ main, dev, feature/** ]
   pull_request:
-    branches: [ main, feature/api ]
+    branches: [ main, dev ]
 
 permissions:
   contents: read
   packages: write
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/cesizen-api
+
 jobs:
   backend:
-    name: Backend - Maven (Java 21, DB intégration)
+    name: Backend • Maven (Java 21 + Postgres)
     runs-on: ubuntu-latest
 
     services:
@@ -22,15 +30,13 @@ jobs:
           POSTGRES_DB: basecesizen
           POSTGRES_USER: myuser
           POSTGRES_PASSWORD: mystere
-        ports:
-          - 5432:5432
+        ports: [ "5432:5432" ]
         options: >-
           --health-cmd="pg_isready -U myuser -d basecesizen"
           --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Temurin JDK 21
         uses: actions/setup-java@v4
@@ -41,55 +47,54 @@ jobs:
 
       - name: Wait for Postgres
         run: |
-          for i in {1..12}; do
-            nc -z localhost 5432 && echo "DB ready" && break
-            echo "waiting db ($i/12)..." && sleep 5
+          for i in {1..24}; do
+            nc -z 127.0.0.1 5432 && echo "DB ready" && break
+            echo "waiting db ($i/24)..." && sleep 5
           done
 
-      # compile + tests (OpenAPI est généré à generate-sources, cf. ton pom)
       - name: Make mvnw executable
         run: chmod +x mvnw
 
-      - name: Build & Test (verbose)
+      - name: Build & Test (profile test)
         env:
           SPRING_PROFILES_ACTIVE: test
-        run: |
-          ./mvnw -B -e -X -DtrimStackTrace=false clean test --no-transfer-progress
+        run: ./mvnw -B -DtrimStackTrace=false -DskipITs=false clean test --no-transfer-progress
 
-      - name: Dump Surefire reports
+      - name: Upload Surefire reports (always)
         if: always()
-        run: |
-          echo "==== surefire-reports ===="
-          if [ -d target/surefire-reports ]; then
-            for f in target/surefire-reports/*; do
-              echo "---- $f ----"
-              cat "$f" || true
-              echo
-            done
-          else
-            echo "Pas de dossier target/surefire-reports"
-          fi
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: |
+            **/target/surefire-reports/**
+            **/target/failsafe-reports/**
+          if-no-files-found: ignore
 
-      - name: Upload JAR
+      - name: Upload backend JAR
         uses: actions/upload-artifact@v4
         with:
           name: cesizen-api-jar
           path: target/*.jar
+          if-no-files-found: warn
 
-  # Si tu as un front à la racine. Sinon ajoute working-directory pour pointer vers le dossier front.
   frontend:
-    name: Frontend - Lint, Test, Build
+    name: Frontend • Lint • Test • Build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        # change ici si ton front est dans un sous-dossier, ex. frontend/
+        working-directory: .
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node 18
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
+          cache: npm
+          cache-dependency-path: package-lock.json
 
-      - name: Install
+      - name: Install deps
         run: npm ci
 
       - name: Lint
@@ -109,89 +114,86 @@ jobs:
           path: dist/
 
   docker:
-    name: Docker - Build & Push (GHCR)
+    name: Docker • Build & Push (GHCR)
     runs-on: ubuntu-latest
-    needs: [backend]
+    needs: [ backend ]     # ajoute "frontend" ici si l'image embarque le front
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compute image meta
-        id: meta
-        run: |
-          IMAGE=ghcr.io/${{ github.repository }}/cesizen-api
-          if [[ "${GITHUB_REF##*/}" == "main" ]]; then
-            TAG=latest
-          else
-            TAG=${GITHUB_REF##*/}-${GITHUB_SHA::7}
-          fi
-          echo "image=$IMAGE" >> $GITHUB_OUTPUT
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Login GHCR (main/develop)
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+      - name: Log in to GHCR (main/dev only)
+        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/dev')
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build image
-        run: |
-          docker build --pull \
-            -t ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }} \
-            .
-        # Si Dockerfile ailleurs: ajouter -f chemin/Dockerfile
+      - name: Docker metadata (tags + labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=dev,enable=${{ github.ref == 'refs/heads/dev' }}
+            type=ref,event=branch
+            type=sha,format=short
 
-      - name: Push (main/develop)
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-        run: docker push ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
-
+      - name: Build (no push on feature/*)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/dev') }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # Dockerfile: ./Dockerfile   # décommente si nécessaire
 
   deploy:
-    name: Deploy to Server (SSH + docker compose)
+    name: Deploy • SSH + docker compose (main)
     if: github.ref == 'refs/heads/main'
-    needs: [docker]   # attend que le job docker (build & push) passe ; sinon remplace par [backend]
+    needs: [ docker ]
     runs-on: ubuntu-latest
 
     steps:
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host:     ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
+          key:      ${{ secrets.SSH_KEY }}
+          port:     ${{ secrets.SSH_PORT || 22 }}
           script_stop: true
           script: |
             set -euo pipefail
             APP_DIR=/opt/cesizen
             REPO=${{ github.repository }}
             BRANCH=main
-
-            # 1) Pré-requis (docker + compose doivent être installés côté serveur)
+            
             docker --version
             docker compose version
-
-            # 2) Récupération du code (clone si 1ère fois)
+            
             if [ ! -d "$APP_DIR/.git" ]; then
               sudo mkdir -p "$APP_DIR"
               sudo chown -R $USER:$USER "$APP_DIR"
               git clone https://github.com/${REPO}.git "$APP_DIR"
             fi
-
+            
             cd "$APP_DIR"
             git fetch --all --prune
             git checkout "$BRANCH"
             git pull --ff-only origin "$BRANCH"
-
-            # 3) (Optionnel) passer en prod les variables si tu as un .env
-            # cp -n .env.example .env || true
-
-            # 4) Redémarrage propre
+            
+            # si tu utilises GHCR pour l'API :
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} || true
+            
             docker compose down --remove-orphans || true
-            docker compose pull || true   # si certaines images viennent d'un registry
+            docker compose pull || true
             docker compose up -d --build
-
-            # 5) Sanity check
+            
             echo "=== Containers ==="
             docker compose ps
