@@ -2,9 +2,9 @@ name: CI - Build, Test, Docker
 
 on:
   push:
-    branches: [ main,dev ]
+    branches: [ main, feature/api]
   pull_request:
-    branches: [ main,dev ]
+    branches: [ main, feature/api ]
 
 permissions:
   contents: read
