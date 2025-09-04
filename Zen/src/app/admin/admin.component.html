@@ -1,0 +1,178 @@
+<div class="admin-container" *ngIf="isAdmin">
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="header-left">
+      <button class="back-btn" (click)="goBack()">
+        <span class="icon">←</span>
+        Retour
+      </button>
+      <h1 class="admin-title">
+        <span class="title-icon">🛠️</span>
+        Administration
+      </h1>
+    </div>
+    <div class="header-right">
+      <button class="refresh-btn" (click)="refreshData()">
+        <span class="icon">🔄</span>
+        Actualiser
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="admin-nav">
+    <button
+      class="nav-btn"
+      [class.active]="activeSection === 'dashboard'"
+      (click)="setActiveSection('dashboard')"
+    >
+      <span class="nav-icon">📊</span>
+      <span class="nav-text">Tableau de bord</span>
+    </button>
+    <button
+      class="nav-btn"
+      [class.active]="activeSection === 'content'"
+      (click)="setActiveSection('content')"
+    >
+      <span class="nav-icon">📝</span>
+      <span class="nav-text">Contenu</span>
+    </button>
+    <button
+      class="nav-btn"
+      [class.active]="activeSection === 'users'"
+      (click)="setActiveSection('users')"
+    >
+      <span class="nav-icon">👥</span>
+      <span class="nav-text">Utilisateurs</span>
+    </button>
+  </nav>
+
+  <!-- Contenu principal -->
+  <main class="admin-main">
+
+    <!-- Dashboard -->
+    <div *ngIf="activeSection === 'dashboard'" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Tableau de bord</h2>
+        <p class="section-subtitle">Vue d'ensemble de l'application</p>
+      </div>
+      <!-- Actions rapides -->
+      <div class="quick-actions">
+        <h3 class="quick-actions-title">Actions rapides</h3>
+        <div class="actions-grid">
+          <button
+            *ngFor="let action of quickActions"
+            class="action-card"
+            (click)="action.action()"
+            [style.border-left-color]="action.color"
+          >
+            <div class="action-icon">{{ action.icon }}</div>
+            <div class="action-content">
+              <div class="action-title">{{ action.title }}</div>
+              <div class="action-description">{{ action.description }}</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestion du contenu -->
+    <div *ngIf="activeSection === 'content'" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Gestion du contenu</h2>
+        <p class="section-subtitle">Créer et modifier les techniques, méditations et ressources</p>
+      </div>
+
+      <app-add-exercice></app-add-exercice>
+    </div>
+
+    <!-- Gestion des utilisateurs -->
+    <div *ngIf="activeSection === 'users'" class="section" >
+      <div class="section-header">
+        <h2 class="section-title">Gestion des utilisateurs</h2>
+      </div>
+
+      <!-- Message d'erreur -->
+      <div *ngIf="userError" class="error-message">
+        {{ userError }}
+      </div>
+
+      <!-- Loader -->
+      <div *ngIf="isLoadingUsers" class="loader">
+        <div class="spinner"></div>
+        <p>Chargement des utilisateurs...</p>
+      </div>
+
+      <!-- Liste des utilisateurs -->
+      <div *ngIf="!isLoadingUsers && !userError" class="users-section">
+        <!-- Barre de recherche -->
+        <div class="search-bar">
+          <input
+            type="text"
+            placeholder="Rechercher un utilisateur..."
+            class="search-input"
+            #searchInput
+            (input)="searchUsers(searchInput.value)"
+          >
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <!-- Tableau des utilisateurs -->
+        <div class="users-table-container">
+          <table class="users-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom d'utilisateur</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th>Rôle</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of users" class="user-row">
+              <td>{{ user.userId }}</td>
+              <td class="username">{{ user.username }}</td>
+              <td class="email">{{ user.email }}</td>
+              <td>{{ user.phone_number || 'Non renseigné' }}</td>
+              <td>
+          <span class="role-badge" [class]="user.role || 'user'">
+            {{ user.role || 'Utilisateur' }}
+          </span>
+              </td>
+              <td class="actions">
+                <form (submit)="updateProfile(applyForm)">
+                  <div class="form-group">
+                    <label for="role">Rôle:</label>
+                    <select id="role" name="role">
+                      <option value="Admin">Admin</option>
+                      <option value="Joueur">Utilisateur</option>
+                    </select>
+                  </div>
+                  <button type="submit">Modifier</button>
+                </form>
+
+                <!-- Bouton Supprimer -->
+                <button
+                  type="button"
+                  class="btn-danger"
+                  (click)="DeleteUser(user.userId)"
+                >
+                  🗑️ Supprimer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="users.length === 0" class="empty-state">
+          <div class="empty-icon">👥</div>
+          <h3>Aucun utilisateur trouvé</h3>
+          <p>Il n'y a pas encore d'utilisateurs inscrits.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,230 @@
+<div class="meditation-container">
+  <!-- Header -->
+  <header class="meditation-header">
+    <button class="back-btn" (click)="goBack()">
+      <span class="icon">←</span>
+      Retour
+    </button>
+    <h1 class="page-title">
+      <span class="title-icon">🧘‍♀️</span>
+      Méditation
+    </h1>
+    <button class="audio-btn" (click)="toggleAudio()" [class.active]="isAudioEnabled">
+      <span class="icon">{{ isAudioEnabled ? '🔊' : '🔇' }}</span>
+    </button>
+  </header>
+
+  <!-- Session active -->
+  <div *ngIf="meditation && isSessionActive" class="session-active">
+    <div class="session-player">
+      <!-- Info session -->
+      <div class="session-info">
+        <div class="session-details">
+          <h2 class="session-title">{{ meditation.title }}</h2>
+          <p class="session-instructor">avec {{ meditation.instructor }}</p>
+          <div class="session-theme">
+            <span class="theme-badge" [style.background-color]="getThemeById(meditation.theme)?.color">
+              {{ getThemeById(meditation.theme)?.icon }}
+              meditation            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visualisation méditation -->
+      <div class="meditation-visual">
+        <div class="breathing-orb" [class.paused]="isPaused">
+          <div class="orb-inner">
+            <div class="time-display">
+              <span class="current-time">{{ formatTime(currentTime) }}</span>
+              <span class="time-separator">/</span>
+              <span class="total-time">{{ formatTime(totalDuration) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barre de progression -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="getProgress()"></div>
+        </div>
+        <div class="progress-info">
+          <span class="time-remaining">{{ formatTime(getTimeRemaining()) }} restant</span>
+        </div>
+      </div>
+
+      <!-- Contrôles de lecture -->
+      <div class="player-controls">
+        <button class="control-btn secondary" (click)="stopSession()">
+          <span class="btn-icon">⏹️</span>
+          Arrêter
+        </button>
+        <button class="control-btn primary large" (click)="togglePause()">
+          <span class="btn-icon">{{ isPaused ? '▶️' : '⏸️' }}</span>
+          {{ isPaused ? 'Reprendre' : 'Pause' }}
+        </button>
+        <button class="control-btn secondary" (click)="closeSession()">
+          <span class="btn-icon">✕</span>
+          Fermer
+        </button>
+      </div>
+
+      <!-- Message de guidance -->
+      <div class="guidance-message">
+        <div class="guidance-content">
+          <span class="guidance-icon">💫</span>
+          <p class="guidance-text">
+            {{ isPaused ? 'Prenez votre temps, reprenez quand vous êtes prêt' : 'Laissez-vous guider et concentrez-vous sur votre respiration' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interface principale (si pas de session active) -->
+  <div *ngIf="!isSessionActive" class="main-interface">
+
+    <!-- Section recommandation -->
+    <section class="recommendation-section">
+      <h2 class="section-title">Recommandé pour vous</h2>
+      <div class="recommendation-card" *ngIf="getRecommendedSession() as recommended">
+        <div class="recommendation-content">
+          <h3 class="recommendation-title">{{ recommended.title }}</h3>
+          <p class="recommendation-description">{{ recommended.description }}</p>
+          <div class="recommendation-meta">
+            <span class="duration">{{ recommended.duration }} min</span>
+            <span class="difficulty" [style.color]="getDifficultyColor(recommended.difficulty)">
+              {{ recommended.difficulty }}
+            </span>
+          </div>
+          <button class="start-btn" (click)="selectSession(recommended)">
+            <span class="btn-icon">▶️</span>
+            Commencer
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtres rapides -->
+    <section class="quick-filters">
+      <h3 class="filter-title">Filtres rapides</h3>
+      <div class="filter-buttons">
+        <button class="filter-btn" (click)="filterByDuration(5)">
+          <span class="filter-icon">⚡</span>
+          5 min max
+        </button>
+        <button class="filter-btn" (click)="filterByDuration(15)">
+          <span class="filter-icon">⏰</span>
+          15 min max
+        </button>
+        <button class="filter-btn" (click)="navigateToMeditation()">
+          <span class="filter-icon">🔄</span>
+          Tout afficher
+        </button>
+      </div>
+    </section>
+
+    <!-- Thèmes -->
+    <section class="themes-section">
+      <h3 class="section-title">Thèmes</h3>
+      <div class="themes-grid">
+        <button
+          *ngFor="let theme of themes"
+          class="theme-card"
+          [class.selected]="selectedTheme === theme.id"
+          (click)="filterByTheme(theme.id)"
+        >
+          <div class="theme-icon" [style.background-color]="theme.color">
+            {{ theme.icon }}
+          </div>
+          <div class="theme-info">
+            <h4 class="theme-name">{{ theme.name }}</h4>
+            <p class="theme-description">{{ theme.description }}</p>
+            <span class="theme-count">{{ getSessionCountByTheme(theme.id) }} séances</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- Sessions -->
+    <section class="sessions-section">
+      <h3 class="section-title">
+        {{ selectedTheme === 'all' ? 'Toutes les séances' : 'Séances ' + (getThemeById(selectedTheme)?.name || '') }}
+        <span class="session-count">({{ meditations.length }})</span>
+      </h3>
+
+      <div class="sessions-grid">
+        <div
+          *ngFor="let session of meditations"
+          class="session-card"
+          (click)="selectSession(session)"
+        >
+          <div class="session-image-container">
+            <div class="session-overlay">
+              <button class="play-btn">
+                <span class="play-icon">▶️</span>
+              </button>
+            </div>
+            <div class="session-duration-badge">{{ session.duration }} min</div>
+          </div>
+
+          <div class="session-content">
+            <h4 class="session-title-small">{{ session.title }}</h4>
+            <p class="session-instructor-small">{{ session.instructor }}</p>
+            <p class="session-description-small">{{ session.description }}</p>
+
+            <div class="session-meta">
+              <span class="session-difficulty" [style.color]="getDifficultyColor(session.difficulty)">
+                {{ session.difficulty }}
+              </span>
+              <div class="session-theme-small">
+                <span class="theme-icon-small" [style.background-color]="getThemeById(session.theme)?.color">
+                  {{ getThemeById(session.theme)?.icon }}
+                </span>
+                {{ getThemeById(session.theme)?.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal de session sélectionnée (pas encore démarrée) -->
+  <div *ngIf="meditation && !isSessionActive" class="session-modal-overlay" (click)="closeSession()">
+    <div class="session-modal" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeSession()">✕</button>
+
+      <div class="modal-header">
+        <div class="modal-info">
+          <h2 class="modal-title">{{ meditation.title }}</h2>
+          <p class="modal-instructor">avec {{ meditation.instructor }}</p>
+          <div class="modal-meta">
+            <span class="modal-duration">{{ meditation.duration }} minutes</span>
+            <span class="modal-difficulty" [style.color]="getDifficultyColor(meditation.difficulty)">
+              {{ meditation.difficulty }}
+            </span>
+            <span class="modal-theme" [style.background-color]="getThemeById(meditation.theme)?.color">
+              {{ getThemeById(meditation.theme)?.icon }}
+              {{ getThemeById(meditation.theme)?.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-description">{{ meditation.description }}</p>
+
+      <div class="modal-footer">
+        <button class="modal-btn secondary" (click)="closeSession()">
+          Plus tard
+        </button>
+        <button class="modal-btn primary" (click)="startSession()">
+          <span class="btn-icon">🧘‍♀️</span>
+          Commencer la méditation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

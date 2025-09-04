@@ -1,5 +1,7 @@
 export interface UserUpdate {
   id: number,
   username: string,
-  role: string
+  email: string,
+  password: string,
+  phone_number: string
 }

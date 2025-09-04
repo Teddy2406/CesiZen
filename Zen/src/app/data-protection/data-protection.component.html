@@ -1,0 +1,268 @@
+<div class="data-protection-container">
+  <div class="header">
+    <h1>Politique de Protection des Données</h1>
+    <p class="last-updated">Dernière mise à jour : {{ lastUpdated }}</p>
+    <p class="subtitle">Conformité RGPD et protection de vos données personnelles</p>
+  </div>
+
+  <div class="content">
+    <nav class="table-of-contents">
+      <h3>Sommaire</h3>
+      <ul>
+        <li><a (click)="scrollToSection('overview')" href="javascript:void(0)">1. Vue d'ensemble</a></li>
+        <li><a (click)="scrollToSection('legal-basis')" href="javascript:void(0)">2. Base légale</a></li>
+        <li><a (click)="scrollToSection('data-categories')" href="javascript:void(0)">3. Catégories de données</a></li>
+        <li><a (click)="scrollToSection('processing-purposes')" href="javascript:void(0)">4. Finalités du traitement</a></li>
+        <li><a (click)="scrollToSection('retention-period')" href="javascript:void(0)">5. Durée de conservation</a></li>
+        <li><a (click)="scrollToSection('data-transfers')" href="javascript:void(0)">6. Transferts de données</a></li>
+        <li><a (click)="scrollToSection('security-measures')" href="javascript:void(0)">7. Mesures de sécurité</a></li>
+        <li><a (click)="scrollToSection('user-rights-detailed')" href="javascript:void(0)">8. Droits détaillés</a></li>
+        <li><a (click)="scrollToSection('data-breach')" href="javascript:void(0)">9. Violation de données</a></li>
+        <li><a (click)="scrollToSection('dpo-contact')" href="javascript:void(0)">10. Contact DPO</a></li>
+      </ul>
+    </nav>
+
+    <section id="overview" class="section">
+      <h2>1. Vue d'ensemble</h2>
+      <div class="highlight-box">
+        <p>
+          Cette politique de protection des données décrit comment nous respectons
+          le Règlement Général sur la Protection des Données (RGPD) et autres
+          réglementations applicables en matière de protection des données.
+        </p>
+      </div>
+      <p>
+        Nous nous engageons à traiter vos données personnelles de manière licite,
+        loyale et transparente, en respectant les principes fondamentaux de protection des données.
+      </p>
+    </section>
+
+    <section id="legal-basis" class="section">
+      <h2>2. Base légale du traitement</h2>
+      <div class="legal-basis-grid">
+        <div class="basis-item">
+          <h3>Consentement</h3>
+          <p>Traitement basé sur votre consentement explicite pour des finalités spécifiques.</p>
+        </div>
+        <div class="basis-item">
+          <h3>Contrat</h3>
+          <p>Traitement nécessaire à l'exécution d'un contrat ou à la prise de mesures précontractuelles.</p>
+        </div>
+        <div class="basis-item">
+          <h3>Obligation légale</h3>
+          <p>Traitement nécessaire au respect d'une obligation légale.</p>
+        </div>
+        <div class="basis-item">
+          <h3>Intérêt légitime</h3>
+          <p>Traitement nécessaire aux fins des intérêts légitimes poursuivis par notre organisation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="data-categories" class="section">
+      <h2>3. Catégories de données traitées</h2>
+      <div class="data-categories">
+        <div class="category">
+          <h3>Données d'identification</h3>
+          <ul>
+            <li>Nom, prénom</li>
+            <li>Date de naissance</li>
+            <li>Adresse postale</li>
+            <li>Numéro de téléphone</li>
+            <li>Adresse email</li>
+          </ul>
+        </div>
+        <div class="category">
+          <h3>Données de connexion</h3>
+          <ul>
+            <li>Adresse IP</li>
+            <li>Logs de connexion</li>
+            <li>Données de navigation</li>
+            <li>Cookies</li>
+          </ul>
+        </div>
+        <div class="category">
+          <h3>Données d'usage</h3>
+          <ul>
+            <li>Historique d'utilisation</li>
+            <li>Préférences utilisateur</li>
+            <li>Données de performance</li>
+            <li>Statistiques d'utilisation</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="processing-purposes" class="section">
+      <h2>4. Finalités du traitement</h2>
+      <table class="purposes-table">
+        <thead>
+        <tr>
+          <th>Finalité</th>
+          <th>Base légale</th>
+          <th>Données concernées</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Fourniture du service</td>
+          <td>Contrat</td>
+          <td>Données d'identification, d'usage</td>
+        </tr>
+        <tr>
+          <td>Support client</td>
+          <td>Intérêt légitime</td>
+          <td>Données d'identification, communications</td>
+        </tr>
+        <tr>
+          <td>Amélioration du service</td>
+          <td>Intérêt légitime</td>
+          <td>Données d'usage, analytiques</td>
+        </tr>
+        <tr>
+          <td>Marketing direct</td>
+          <td>Consentement</td>
+          <td>Données d'identification, préférences</td>
+        </tr>
+        <tr>
+          <td>Conformité légale</td>
+          <td>Obligation légale</td>
+          <td>Toutes données nécessaires</td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="retention-period" class="section">
+      <h2>5. Durée de conservation</h2>
+      <div class="retention-info">
+        <div class="retention-item">
+          <h3>Données de compte actif</h3>
+          <p>Conservées pendant la durée d'utilisation du service + 3 ans après la dernière connexion</p>
+        </div>
+        <div class="retention-item">
+          <h3>Données de facturation</h3>
+          <p>Conservées pendant 10 ans conformément aux obligations comptables</p>
+        </div>
+        <div class="retention-item">
+          <h3>Données de support</h3>
+          <p>Conservées pendant 3 ans après la résolution du ticket</p>
+        </div>
+        <div class="retention-item">
+          <h3>Logs de connexion</h3>
+          <p>Conservés pendant 12 mois pour des raisons de sécurité</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="data-transfers" class="section">
+      <h2>6. Transferts de données</h2>
+      <p>
+        Vos données peuvent être transférées vers des pays tiers dans les cas suivants :
+      </p>
+      <ul>
+        <li>Pays bénéficiant d'une décision d'adéquation de la Commission européenne</li>
+        <li>Pays avec des garanties appropriées (clauses contractuelles types)</li>
+        <li>Transferts basés sur des dérogations spécifiques</li>
+      </ul>
+      <div class="transfer-safeguards">
+        <h3>Garanties appliquées</h3>
+        <ul>
+          <li>Clauses contractuelles types approuvées par la Commission européenne</li>
+          <li>Codes de conduite approuvés</li>
+          <li>Mécanismes de certification</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="security-measures" class="section">
+      <h2>7. Mesures de sécurité</h2>
+      <div class="security-measures">
+        <div class="measure">
+          <h3>Mesures techniques</h3>
+          <ul>
+            <li>Chiffrement des données en transit et au repos</li>
+            <li>Contrôles d'accès basés sur les rôles</li>
+            <li>Authentification multifacteur</li>
+            <li>Surveillance et détection d'intrusion</li>
+            <li>Sauvegarde et récupération des données</li>
+          </ul>
+        </div>
+        <div class="measure">
+          <h3>Mesures organisationnelles</h3>
+          <ul>
+            <li>Politiques de sécurité des données</li>
+            <li>Formation du personnel</li>
+            <li>Évaluation d'impact sur la protection des données</li>
+            <li>Procédures de notification de violation</li>
+            <li>Audits de sécurité réguliers</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="user-rights-detailed" class="section">
+      <h2>8. Vos droits détaillés</h2>
+      <div class="rights-detailed">
+        <div class="right-item">
+          <h3>Droit d'accès (Art. 15 RGPD)</h3>
+          <p>Vous pouvez demander l'accès à vos données personnelles et aux informations sur leur traitement.</p>
+          <button class="btn-primary" (click)="downloadDataRequest()">Demander l'accès</button>
+        </div>
+        <div class="right-item">
+          <h3>Droit de rectification (Art. 16 RGPD)</h3>
+          <p>Vous pouvez demander la rectification de données inexactes ou incomplètes.</p>
+        </div>
+        <div class="right-item">
+          <h3>Droit à l'effacement (Art. 17 RGPD)</h3>
+          <p>Vous pouvez demander l'effacement de vos données dans certaines circonstances.</p>
+        </div>
+        <div class="right-item">
+          <h3>Droit à la portabilité (Art. 20 RGPD)</h3>
+          <p>Vous pouvez demander à recevoir vos données dans un format structuré et lisible.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="data-breach" class="section">
+      <h2>9. Notification de violation de données</h2>
+      <p>
+        En cas de violation de données personnelles susceptible d'engendrer un risque élevé
+        pour vos droits et libertés, nous vous notifierons dans les meilleurs délais et au plus tard
+        dans les 72 heures suivant la découverte de la violation.
+      </p>
+      <div class="breach-procedure">
+        <h3>Procédure de notification</h3>
+        <ol>
+          <li>Détection et évaluation de la violation</li>
+          <li>Notification à l'autorité de contrôle</li>
+          <li>Communication aux personnes concernées si nécessaire</li>
+          <li>Mesures correctives et préventives</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="dpo-contact" class="section">
+      <h2>10. Contact du Délégué à la Protection des Données</h2>
+      <div class="dpo-contact">
+        <h3>Délégué à la Protection des Données (DPO)</h3>
+        <div class="contact-details">
+          <p><strong>Nom :</strong> Marie Dubois</p>
+          <p><strong>Téléphone :</strong> +33 1 23 45 67 90</p>
+          <p><strong>Adresse :</strong> 123 Rue de la Protection, 75001 Paris, France</p>
+        </div>
+        <button class="btn-secondary" (click)="submitDataRequest()">Contacter le DPO</button>
+      </div>
+
+      <div class="authority-contact">
+        <h3>Autorité de contrôle compétente</h3>
+        <p>
+          <strong>CNIL (Commission Nationale de l'Informatique et des Libertés)</strong><br>
+          3 Place de Fontenoy - TSA 80715<br>
+          75334 PARIS CEDEX 07<br>
+          Téléphone : +33 1 53 73 22 22
+        </p>
+      </div>
+    </section>
+  </div>
+</div>

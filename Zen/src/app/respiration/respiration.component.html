@@ -1,0 +1,175 @@
+<div class="respiration-container">
+  <!-- Header -->
+  <header class="respiration-header">
+    <button class="back-btn" (click)="goBack()">
+      <span class="icon">←</span>
+      Retour
+    </button>
+    <h1 class="page-title">
+      <span class="title-icon">🫁</span>
+      Exercices de Respiration
+    </h1>
+    <button class="audio-btn" (click)="toggleAudio()" [class.active]="isAudioEnabled">
+      <span class="icon">{{ isAudioEnabled ? '🔊' : '🔇' }}</span>
+    </button>
+  </header>
+
+  <!-- Sélection des techniques (si aucun exercice actif) -->
+  <div *ngIf="!respiration || !isExerciseActive" class="techniques-selection">
+    <h2 class="section-title">Choisissez votre technique</h2>
+
+    <div class="techniques-grid">
+      <div
+        *ngFor="let respiration of respirations"
+        class="technique-card"
+        [class.selected]="respiration.respirationId === respiration.respirationId"
+        (click)="selectTechnique(respiration)"
+      >
+        <div class="technique-header">
+          <div class="technique-info">
+            <h3 class="technique-name">{{ respiration.name }}</h3>
+            <span class="technique-difficulty" [style.color]="getDifficultyColor(respiration.difficulty)">
+              {{ respiration.difficulty }}
+            </span>
+          </div>
+          <span class="technique-duration">{{ respiration.duration }} min</span>
+        </div>
+
+        <p class="technique-description">{{ respiration.description }}</p>
+
+        <div class="technique-details">
+          <div class="detail-item">
+            <span class="detail-label">Inspiration:</span>
+            <span class="detail-value">{{ respiration.inhaleTime }}s</span>
+          </div>
+          <div class="detail-item" *ngIf="respiration.holdTime > 0">
+            <span class="detail-label">Rétention:</span>
+            <span class="detail-value">{{ respiration.holdTime }}s</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Expiration:</span>
+            <span class="detail-value">{{ respiration.exhaleTime }}s</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Cycles:</span>
+            <span class="detail-value">{{ respiration.cycles }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bouton de démarrage -->
+    <div *ngIf="respiration" class="start-section">
+      <button class="start-btn" (click)="startExercise()">
+        <span class="btn-icon">▶️</span>
+        Commencer {{ respiration.name }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Interface d'exercice actif -->
+  <div *ngIf="respiration && isExerciseActive" class="exercise-interface">
+
+    <!-- Informations de la session -->
+    <div class="session-info">
+      <h2 class="exercise-title">{{ respiration.name }}</h2>
+      <div class="session-stats">
+        <div class="stat-item">
+          <span class="stat-label">Cycle</span>
+          <span class="stat-value">{{ currentCycle }} / {{ respiration.cycles }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Temps restant</span>
+          <span class="stat-value">{{ formatTime(totalTimeRemaining) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cercle de respiration animé -->
+    <div class="breathing-circle-container">
+      <div
+        class="breathing-circle"
+        [style.background-color]="getPhaseColor()"
+        [class.inhale]="currentPhase === 'inhale'"
+        [class.hold]="currentPhase === 'hold'"
+        [class.exhale]="currentPhase === 'exhale'"
+        [class.pause]="currentPhase === 'pause'"
+      >
+        <div class="circle-content">
+          <div class="phase-instruction">{{ getPhaseInstruction() }}</div>
+          <div class="phase-timer">{{ timeRemaining }}</div>
+        </div>
+      </div>
+
+      <!-- Indicateur de phase -->
+      <div class="phase-indicator">
+        <div class="phase-dots">
+          <div class="phase-dot" [class.active]="currentPhase === 'inhale'">Inspirer</div>
+          <div class="phase-dot" [class.active]="currentPhase === 'hold'" *ngIf="respiration.holdTime > 0">Retenir</div>
+          <div class="phase-dot" [class.active]="currentPhase === 'exhale'">Expirer</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barre de progression -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          [style.width.%]="((respiration.cycles - currentCycle + 1) / respiration.cycles) * 100"
+        ></div>
+      </div>
+      <span class="progress-text">{{ currentCycle }} / {{ respiration.cycles }} cycles</span>
+    </div>
+
+    <!-- Contrôles d'exercice -->
+    <div class="exercise-controls">
+      <button class="control-btn secondary" (click)="stopExercise()">
+        <span class="btn-icon">⏹️</span>
+        Arrêter
+      </button>
+      <button class="control-btn primary" (click)="togglePause()">
+        <span class="btn-icon">{{ isExerciseActive ? '⏸️' : '▶️' }}</span>
+        {{ isExerciseActive ? 'Pause' : 'Reprendre' }}
+      </button>
+    </div>
+
+    <!-- Conseils pendant l'exercice -->
+    <div class="exercise-tips">
+      <div class="tip-item">
+        <span class="tip-icon">💡</span>
+        <span class="tip-text">Concentrez-vous sur votre respiration et relâchez vos tensions</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interface de pause -->
+  <div *ngIf="respiration && !isExerciseActive && currentCycle > 0" class="pause-interface">
+    <div class="pause-content">
+      <h3 class="pause-title">Exercice en pause</h3>
+      <p class="pause-description">Vous pouvez reprendre quand vous le souhaitez</p>
+
+      <div class="pause-stats">
+        <div class="stat-item">
+          <span class="stat-label">Cycles complétés</span>
+          <span class="stat-value">{{ currentCycle - 1 }} / {{ respiration.cycles }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Temps restant</span>
+          <span class="stat-value">{{ formatTime(totalTimeRemaining) }}</span>
+        </div>
+      </div>
+
+      <div class="pause-controls">
+        <button class="control-btn secondary" (click)="stopExercise()">
+          <span class="btn-icon">⏹️</span>
+          Terminer
+        </button>
+        <button class="control-btn primary" (click)="togglePause()">
+          <span class="btn-icon">▶️</span>
+          Reprendre
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

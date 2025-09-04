@@ -1,5 +1,6 @@
-<div class="login-container">
-  <h2>Connexion</h2>
+<div class="auth-container">
+  <div class="login-container">
+    <h2>Connexion</h2>
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="username">Nom d'utilisateur</label>
@@ -25,5 +26,12 @@
     </div>
     <button type="submit" class="btn btn-primary">Se connecter</button>
   </form>
+    <br>
+    <br>
+    <div class="auth-links">
+      <a class="btn btn-secondary" routerLink="/register">S'inscrire</a>
+      <a class="btn btn-secondary" routerLink="/TermsOfService">Conditions Générales d'utilisation</a>
+    </div>
 </div>
-<a class="btn btn-secondary mt-3" routerLink="/register">S'inscrire</a>
+</div>
+

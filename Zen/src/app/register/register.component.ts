@@ -10,14 +10,14 @@ import {Router} from '@angular/router';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf,
-    NgForOf
+    NgIf
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
   users!: User[];
+  isSubmitting = false;
   appliForm = new FormGroup({
     username: new FormControl(''),
     email: new FormControl(''),
@@ -49,6 +49,9 @@ export class RegisterComponent {
     } else {
       console.error("Erreur dans le formulaire");
     }
+  }
+  trackByUser(index: number, user: any): any {
+    return user.id || user.username || index;
   }
 
 }

@@ -1,0 +1,81 @@
+<div class="ressources-container">
+  <!-- Mode liste d'articles -->
+  <div *ngIf="!modeDetail" class="liste-articles">
+    <!-- En-tête avec titre et filtres -->
+    <div class="header">
+      <h1 class="titre-principal">Ressources Bien-être</h1>
+      <p class="sous-titre">Découvrez nos articles pour améliorer votre quotidien</p>
+
+      <!-- Filtres par thème -->
+      <div class="filtres">
+        <h3>Filtrer par thème :</h3>
+        <div class="boutons-themes">
+          <button
+            *ngFor="let theme of themes"
+            [class.actif]="themeSelectionne === theme"
+            (click)="filtrerParTheme(theme)"
+            class="btn-theme">
+            {{ theme }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grille d'articles -->
+    <div class="grille-articles">
+      <div
+        *ngFor="let ressource of ressources"
+        class="carte-article"
+        (click)="ouvrirArticle(ressource)">
+
+        <div class="image-container">
+          <div class="badge-theme">{{ ressource.theme }}</div>
+          <div class="temps-lecture">{{ ressource.tempsLecture }}min</div>
+        </div>
+
+        <div class="contenu-carte">
+          <h3 class="titre-article">{{ ressource.titre }}</h3>
+          <p class="description-article">{{ ressource.description }}</p>
+          <div class="meta-info">
+            <span class="date-publication">{{ formaterDate(ressource.datePublication) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message si aucun article -->
+    <div *ngIf="RessourceSelectionne" class="aucun-article">
+      <p>Aucun article trouvé pour ce thème.</p>
+    </div>
+  </div>
+
+  <!-- Mode détail d'un article -->
+  <div *ngIf="modeDetail && RessourceSelectionne" class="detail-article">
+    <div class="header-detail">
+      <button (click)="fermerArticle()" class="btn-retour">
+        ← Retour aux articles
+      </button>
+    </div>
+
+    <article class="article-complet">
+      <div class="image-hero">
+        <div class="overlay-info">
+          <span class="badge-theme-detail">{{ RessourceSelectionne.theme }}</span>
+          <span class="temps-lecture-detail">{{ RessourceSelectionne.tempsLecture }}min</span>
+        </div>
+      </div>
+
+      <div class="contenu-article">
+        <header class="article-header">
+          <h1>{{ RessourceSelectionne.titre }}</h1>
+          <div class="meta-article">
+            <span class="date">{{ formaterDate(RessourceSelectionne.datePublication) }}</span>
+          </div>
+        </header>
+
+        <div class="article-body" [innerHTML]="RessourceSelectionne.contenu">
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

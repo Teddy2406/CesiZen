@@ -1,0 +1,573 @@
+<div class="add-exercice-container" *ngIf="isAdmin">
+  <!-- Header -->
+  <header class="header">
+    <button class="back-btn" (click)="goBack()">
+      <span class="icon">←</span>
+      Retour
+    </button>
+    <h1 class="title">
+      <span class="title-icon">📝</span>
+      Ajouter du contenu
+    </h1>
+  </header>
+
+  <!-- Navigation par onglets -->
+  <div class="tabs-navigation">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'respiration'"
+      (click)="setActiveTab('respiration')"
+    >
+      🫁 Respiration
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'meditation'"
+      (click)="setActiveTab('meditation')"
+    >
+      🧘‍♀️ Méditation
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'resource'"
+      (click)="setActiveTab('resource')"
+    >
+      📚 Ressources
+    </button>
+  </div>
+
+  <!-- Contenu des onglets -->
+  <div class="tab-content">
+
+    <!-- Formulaire Respiration -->
+    <div *ngIf="activeTab === 'respiration'" class="form-container">
+      <h2 class="form-title">Nouvelle technique de respiration</h2>
+
+      <form [formGroup]="respirationForm" (ngSubmit)="createRespirationForm(respirationForm)" class="form">
+        <!-- Nom -->
+        <div class="form-group">
+          <label for="resp-name" class="label">Nom de la technique *</label>
+          <input
+            type="text"
+            id="resp-name"
+            formControlName="name"
+            class="input"
+            [class.error]="hasError(respirationForm, 'name', 'required') || hasError(respirationForm, 'name', 'minlength')"
+            placeholder="Ex: Respiration 4-7-8"
+          >
+          <div class="error-message" *ngIf="respirationForm.get('name')?.touched && respirationForm.get('name')?.errors">
+            {{ getErrorMessage(respirationForm, 'name') }}
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="resp-description" class="label">Description *</label>
+          <textarea
+            id="resp-description"
+            formControlName="description"
+            class="textarea"
+            [class.error]="hasError(respirationForm, 'description', 'required') || hasError(respirationForm, 'description', 'minlength')"
+            placeholder="Décrivez la technique et ses bienfaits..."
+            rows="4"
+          ></textarea>
+          <div class="error-message" *ngIf="respirationForm.get('description')?.touched && respirationForm.get('description')?.errors">
+            {{ getErrorMessage(respirationForm, 'description') }}
+          </div>
+        </div>
+
+        <!-- Paramètres de respiration -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inhale-time" class="label">Temps d'inspiration (s) *</label>
+            <input
+              type="number"
+              id="inhale-time"
+              formControlName="inhaleTime"
+              class="input"
+              min="1"
+              max="30"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="hold-time" class="label">Temps de rétention (s)</label>
+            <input
+              type="number"
+              id="hold-time"
+              formControlName="holdTime"
+              class="input"
+              min="0"
+              max="30"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="exhale-time" class="label">Temps d'expiration (s) *</label>
+            <input
+              type="number"
+              id="exhale-time"
+              formControlName="exhaleTime"
+              class="input"
+              min="1"
+              max="30"
+            >
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cycles" class="label">Nombre de cycles *</label>
+            <input
+              type="number"
+              id="cycles"
+              formControlName="cycles"
+              class="input"
+              min="1"
+              max="50"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="duration" class="label">Durée totale (min) *</label>
+            <input
+              type="number"
+              id="duration"
+              formControlName="duration"
+              class="input"
+              min="1"
+              max="60"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="resp-difficulty" class="label">Difficulté *</label>
+            <select id="resp-difficulty" formControlName="difficulty" class="select">
+              <option *ngFor="let difficulty of difficulties" [value]="difficulty">
+                {{ difficulty }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="respirationForm.reset()">
+            Annuler
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="respirationForm.invalid">
+            🫁 Créer la technique
+          </button>
+        </div>
+      </form>
+      <!-- SECTION LISTE DES RESPIRATIONS -->
+      <div *ngIf="!isLoadingRespirations && !respirationError" class="respirations-section">
+
+        <h2 class="section-title">Gestion des Exercices de Respiration</h2>
+
+        <!-- Barre de recherche -->
+
+        <!-- Tableau -->
+        <div class="respirations-table-container">
+          <table class="respirations-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Inspire&nbsp;(s)</th>
+              <th>Blocage&nbsp;(s)</th>
+              <th>Expire&nbsp;(s)</th>
+              <th>Cycles</th>
+              <th>Durée&nbsp;(min)</th>
+              <th>Difficulté</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr *ngFor="let res of respirations" class="respiration-row">
+              <td>{{ res.respirationId }}</td>
+              <td>{{ res.name }}</td>
+              <td>{{ res.inhaleTime }}</td>
+              <td>{{ res.holdTime }}</td>
+              <td>{{ res.exhaleTime }}</td>
+              <td>{{ res.cycles }}</td>
+              <td>{{ res.duration }}</td>
+              <td>{{ res.difficulty }}</td>
+
+              <td class="actions">
+                <form [formGroup]="respirationForm" (ngSubmit)="updateRespiration(res)">
+                  <select formControlName="difficulty">
+                    <option value="Débutant">Débutant</option>
+                    <option value="Intermédiaire">Intermédiaire</option>
+                    <option value="Avancé">Avancé</option>
+                  </select>
+                  <button type="submit" class="btn-primary">Modifier</button>
+                </form>
+
+                <button type="button" class="btn-danger" (click)="deleteRespiration(res.respirationId)">
+                  🗑️ Supprimer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- État vide -->
+        <div *ngIf="respirations.length === 0" class="empty-state">
+          <div class="empty-icon">🌬️</div>
+          <h3>Aucun exercice trouvé</h3>
+          <p>Ajoutez un exercice de respiration pour démarrer.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Formulaire Méditation -->
+    <div *ngIf="activeTab === 'meditation'" class="form-container">
+      <h2 class="form-title">Nouvelle séance de méditation</h2>
+
+      <form [formGroup]="meditationForm" (ngSubmit)="createMeditationForm(meditationForm)" class="form">
+        <!-- Titre -->
+        <div class="form-group">
+          <label for="med-title" class="label">Titre de la séance *</label>
+          <input
+            type="text"
+            id="med-title"
+            formControlName="title"
+            class="input"
+            [class.error]="hasError(meditationForm, 'title', 'required') || hasError(meditationForm, 'title', 'minlength')"
+            placeholder="Ex: Méditation pour le sommeil"
+          >
+          <div class="error-message" *ngIf="meditationForm.get('title')?.touched && meditationForm.get('title')?.errors">
+            {{ getErrorMessage(meditationForm, 'title') }}
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="med-description" class="label">Description *</label>
+          <textarea
+            id="med-description"
+            formControlName="description"
+            class="textarea"
+            [class.error]="hasError(meditationForm, 'description', 'required') || hasError(meditationForm, 'description', 'minlength')"
+            placeholder="Décrivez la séance et ses objectifs..."
+            rows="4"
+          ></textarea>
+          <div class="error-message" *ngIf="meditationForm.get('description')?.touched && meditationForm.get('description')?.errors">
+            {{ getErrorMessage(meditationForm, 'description') }}
+          </div>
+        </div>
+
+        <!-- Méta-informations -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="theme" class="label">Thème *</label>
+            <select id="theme" formControlName="theme" class="select">
+              <option *ngFor="let theme of meditationThemes" [value]="theme">
+                {{ theme }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="med-duration" class="label">Durée (min) *</label>
+            <input
+              type="number"
+              id="med-duration"
+              formControlName="duration"
+              class="input"
+              min="1"
+              max="120"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="med-difficulty" class="label">Difficulté *</label>
+            <select id="med-difficulty" formControlName="difficulty" class="select">
+              <option *ngFor="let difficulty of difficulties" [value]="difficulty">
+                {{ difficulty }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Instructeur et média -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="instructor" class="label">Instructeur *</label>
+            <input
+              type="text"
+              id="instructor"
+              formControlName="instructor"
+              class="input"
+              placeholder="Nom de l'instructeur"
+            >
+          </div>
+        </div>
+
+
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="meditationForm.reset()">
+            Annuler
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="meditationForm.invalid">
+            🧘‍♀️ Créer la séance
+          </button>
+        </div>
+      </form>
+      <!-- SECTION LISTE DES MÉDITATIONS -->
+      <div *ngIf="!isLoadingMeditations && !meditationError" class="meditations-section">
+
+        <h2 class="section-title">Gestion des Méditations</h2>
+
+        <!-- Barre de recherche -->
+        <!-- Tableau -->
+        <div class="meditations-table-container">
+          <table class="meditations-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Titre</th>
+              <th>Thème</th>
+              <th>Durée&nbsp;(min)</th>
+              <th>Difficulté</th>
+              <th>Instructeur</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr *ngFor="let med of meditations" class="meditation-row">
+              <td>{{ med.meditationId }}</td>
+              <td>{{ med.title }}</td>
+              <td>{{ med.theme }}</td>
+              <td>{{ med.duration }}</td>
+              <td>{{ med.difficulty }}</td>
+              <td>{{ med.instructor }}</td>
+
+              <td class="actions">
+                <!-- Formulaire de modification rapide -->
+                <form [formGroup]="meditationForm" (ngSubmit)="updateMeditation(med)">
+                  <select formControlName="difficulty">
+                    <option value="Débutant">Débutant</option>
+                    <option value="Intermédiaire">Intermédiaire</option>
+                    <option value="Avancé">Avancé</option>
+                  </select>
+                  <button type="submit" class="btn-primary">Modifier</button>
+                </form>
+
+                <button type="button" class="btn-danger" (click)="deleteMeditation(med.meditationId)">
+                  🗑️ Supprimer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- État vide -->
+        <div *ngIf="meditations.length === 0" class="empty-state">
+          <div class="empty-icon">🧘‍♀️</div>
+          <h3>Aucune méditation trouvée</h3>
+          <p>Créez votre première séance pour commencer.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Formulaire Ressources -->
+    <div *ngIf="activeTab === 'resource'" class="form-container">
+      <h2 class="form-title">Nouvelle ressource</h2>
+
+      <form [formGroup]="resourceForm" (ngSubmit)="createResourceForm(resourceForm)" class="form">
+        <!-- Titre -->
+        <div class="form-group">
+          <label for="res-title" class="label">Titre de la ressource *</label>
+          <input
+            type="text"
+            id="res-title"
+            formControlName="title"
+            class="input"
+            [class.error]="hasError(resourceForm, 'title', 'required') || hasError(resourceForm, 'title', 'minlength')"
+            placeholder="Ex: Guide de la pleine conscience"
+          >
+          <div class="error-message" *ngIf="resourceForm.get('title')?.touched && resourceForm.get('title')?.errors">
+            {{ getErrorMessage(resourceForm, 'title') }}
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="res-description" class="label">Description *</label>
+          <textarea
+            id="res-description"
+            formControlName="description"
+            class="textarea"
+            [class.error]="hasError(resourceForm, 'description', 'required') || hasError(resourceForm, 'description', 'minlength')"
+            placeholder="Décrivez le contenu de la ressource..."
+            rows="4"
+          ></textarea>
+          <div class="error-message" *ngIf="resourceForm.get('description')?.touched && resourceForm.get('description')?.errors">
+            {{ getErrorMessage(resourceForm, 'description') }}
+          </div>
+        </div>
+
+        <!-- Méta-informations -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="category" class="label">Catégorie *</label>
+            <select id="category" formControlName="category" class="select" [class.error]="hasError(resourceForm, 'category', 'required')">
+              <option value="">Sélectionnez une catégorie</option>
+              <option *ngFor="let category of resourceCategories" [value]="category">
+                {{ category }}
+              </option>
+            </select>
+            <div class="error-message" *ngIf="resourceForm.get('category')?.touched && resourceForm.get('category')?.errors">
+              {{ getErrorMessage(resourceForm, 'category') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="type" class="label">Type *</label>
+            <select id="type" formControlName="type" class="select" [class.error]="hasError(resourceForm, 'type', 'required')">
+              <option value="">Sélectionnez un type</option>
+              <option *ngFor="let type of resourceTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+            <div class="error-message" *ngIf="resourceForm.get('type')?.touched && resourceForm.get('type')?.errors">
+              {{ getErrorMessage(resourceForm, 'type') }}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Auteur et Temps de lecture -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="author" class="label">Auteur *</label>
+            <input
+              type="text"
+              id="author"
+              formControlName="author"
+              class="input"
+              [class.error]="hasError(resourceForm, 'author', 'required')"
+              placeholder="Nom de l'auteur"
+            >
+            <div class="error-message" *ngIf="resourceForm.get('author')?.touched && resourceForm.get('author')?.errors">
+              {{ getErrorMessage(resourceForm, 'author') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="temps-lecture" class="label">Temps de lecture (min) *</label>
+            <input
+              type="text"
+              id="temps-lecture"
+              formControlName="tempsLecture"
+              class="input"
+              [class.error]="hasError(resourceForm, 'tempsLecture', 'required') || hasError(resourceForm, 'tempsLecture', 'min') || hasError(resourceForm, 'tempsLecture', 'max')"
+              placeholder="Ex: 15"
+              min="1"
+              max="120"
+            >
+            <div class="error-message" *ngIf="resourceForm.get('tempsLecture')?.touched && resourceForm.get('tempsLecture')?.errors">
+              {{ getErrorMessage(resourceForm, 'tempsLecture') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Contenu -->
+        <div class="form-group">
+          <label for="content" class="label">Contenu (optionnel)</label>
+          <textarea
+            id="content"
+            formControlName="content"
+            class="textarea"
+            placeholder="Contenu textuel de la ressource..."
+            rows="6"
+          ></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="resourceForm.reset()">
+            Annuler
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="resourceForm.invalid">
+            📚 Créer la ressource
+          </button>
+        </div>
+      </form>
+      <br>
+      <br>
+      <br>
+      <br>
+      <!-- SECTION LISTE DES RESSOURCES -->
+      <div *ngIf="!isLoadingResources && !resourceError" class="resources-section">
+        <h2 class="section-title">Gestion des Ressources</h2>
+        <!-- Tableau des ressources -->
+        <div class="resources-table-container">
+          <table class="resources-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Titre</th>
+              <th>Thème</th>
+              <th>Temps de lecture</th>
+              <th>Date de publication</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr *ngFor="let res of ressources" class="ressource-row">
+              <td>{{ res.id }}</td>
+              <td class="title">{{ res.titre }}</td>
+              <td class="theme">{{ res.theme }}</td>
+              <td>{{ res.tempsLecture }}</td>
+              <td>{{ res.datePublication | date:'dd/MM/yyyy' }}</td>
+
+              <td class="actions">
+                <!-- Formulaire de modification rapide (ex. changer le thème) -->
+                <form (submit)="updateRessource(applyForm)">
+                  <div class="form-group">
+                  </div>
+                  <button type="submit" class="btn-primary">Modifier</button>
+                </form>
+
+                <!-- Bouton Supprimer -->
+                <button
+                  type="button"
+                  class="btn-danger"
+                  (click)="deleteRessource(res.id)"
+                >
+                  🗑️ Supprimer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- État vide -->
+        <div *ngIf="ressources.length === 0" class="empty-state">
+          <div class="empty-icon">📚</div>
+          <h3>Aucune ressource trouvée</h3>
+          <p>Aucun article n’a encore été publié.</p>
+        </div>
+      </div>
+
+
+
+    </div>
+
+  </div>
+</div>

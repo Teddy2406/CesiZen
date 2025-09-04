@@ -1,0 +1,92 @@
+<div class="activites-container">
+  <!-- Header de la page -->
+  <div class="page-header">
+    <h1 class="page-title">Activités</h1>
+    <p class="page-subtitle">Découvrez nos exercices pour améliorer votre bien-être mental et physique</p>
+  </div>
+
+  <!-- Section Exercice -->
+  <section class="activity-section">
+    <div class="activity-card">
+      <div class="activity-image">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop" alt="Femme qui fait des exercices" />
+        <div class="activity-overlay">
+          <span class="activity-icon">💪</span>
+        </div>
+      </div>
+      <div class="activity-content">
+        <h2 class="activity-title">Exercice</h2>
+        <p class="activity-description">Développez votre bien-être physique avec nos exercices adaptés à tous les niveaux. Renforcez votre corps et votre esprit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Méditation -->
+  <section class="activity-section reverse">
+    <div class="activity-card">
+      <div class="activity-content">
+        <h2 class="activity-title">Méditation</h2>
+        <p class="activity-description">Pratiquez la pleine conscience à l'aide de séances guidées. Trouvez la paix intérieure et réduisez votre stress au quotidien.</p>
+        <div class="activity-features">
+          <span class="feature-tag">✓ Méditations guidées</span>
+          <span class="feature-tag">✓ Différents thèmes</span>
+          <span class="feature-tag">✓ 5-60 min</span>
+        </div>
+        <button class="activity-btn" (click)="navigateToMeditation()">
+          <span class="btn-icon">🧘‍♀️</span>
+          Commencer
+        </button>
+      </div>
+      <div class="activity-image">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" alt="Femme en méditation" />
+        <div class="activity-overlay">
+          <span class="activity-icon">🧘‍♀️</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Respiration -->
+  <section class="activity-section reverse">
+    <div class="activity-card">
+      <div class="activity-content">
+        <h2 class="activity-title">Respiration</h2>
+        <p class="activity-description">Apprenez des techniques de respiration pour gérer le stress et l'anxiété. Retrouvez votre calme en quelques minutes.</p>
+        <div class="activity-features">
+          <span class="feature-tag">✓ Techniques variées</span>
+          <span class="feature-tag">✓ Guidage vocal</span>
+          <span class="feature-tag">✓ 2-15 min</span>
+        </div>
+        <button class="activity-btn" (click)="navigateToRespiration()">
+          <span class="btn-icon">🫁</span>
+          Commencer
+        </button>
+      </div>
+      <div class="activity-image">
+        <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=400&h=300&fit=crop" alt="Exercices de respiration" />
+        <div class="activity-overlay">
+          <span class="activity-icon">🫁</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action final -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Prêt à commencer votre parcours bien-être ?</h2>
+      <p>Choisissez l'activité qui vous correspond et commencez dès maintenant votre transformation personnelle.</p>
+      <div class="cta-buttons">
+        <button class="btn-secondary" (click)="navigateToRessources()">
+          <span class="btn-icon">📖</span>
+          Explorer les ressources
+        </button>
+      </div>
+    </div>
+    <div class="cta-background">
+      <div class="floating-shape shape-1"></div>
+      <div class="floating-shape shape-2"></div>
+      <div class="floating-shape shape-3"></div>
+    </div>
+  </section>
+</div>

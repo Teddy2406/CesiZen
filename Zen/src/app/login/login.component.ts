@@ -1,30 +1,30 @@
-import { Component } from '@angular/core';
-import {RouterLink} from '@angular/router';
-import {AuthService} from '../../services/Auth.Service';
-import {FormsModule} from '@angular/forms';
-import {NgIf} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/Auth.Service';
+import { FormsModule, NgForm } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  standalone: true,
-  imports: [
-    FormsModule,
-    RouterLink
-  ],
-
+  imports: [FormsModule, RouterLink]
 })
-export class LoginComponent {
-  credentials = {
-    username: '',
-    password: '',
-  };
+export class LoginComponent implements OnInit {
+  credentials = { username: '', password: '' };
 
+  constructor(private authService: AuthService, private router: Router) {}
 
-  constructor(private authService: AuthService) {}
+  ngOnInit(): void {
+    // Si l'utilisateur est déjà connecté, on le redirige
+    if (this.authService.getCurrentUserId()) {
+      this.router.navigate(['/home']);
+    }
+  }
 
   onSubmit() {
-    this.authService.login(this.credentials);
+    this.authService.login(this.credentials)
   }
 }

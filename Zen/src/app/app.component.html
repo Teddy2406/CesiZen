@@ -1,8 +1,82 @@
-<div class="navigation">
-  <div class="navigation-item">
-    <button mat-raised-button (click)="logout()">Se déconnecter</button>
+<div class="app-container">
+  <!-- Loader de navigation -->
+  <div class="navigation-loader" *ngIf="isNavigating" @pageLoader>
+    <div class="loader-spinner"></div>
+    <span>Chargement...</span>
+  </div>
+
+  <div class="navigation">
+    <div class="navigation-logo">
+      <img src="https://media.discordapp.net/attachments/1338781003627499571/1379788054578855967/logo-cesizen.png?ex=6842d4c3&is=68418343&hm=fa853c38f20f1c199418038054281936eee29b61b2be3e83926945b1fa0384f4&=&format=webp&quality=lossless" alt="CESIZen Logo" height="221" width="339"/>
+    </div>
+
+    <!-- Burger button -->
+    <div class="burger" (click)="toggleMenu()" [ngClass]="{ 'active': menuOpen }">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Navigation links -->
+    <div class="navigation-links" [ngClass]="{ 'open': menuOpen }">
+      <a routerLink="/home"
+         routerLinkActive="active"
+         (click)="navigateWithEffect('/home')"
+         class="nav-link">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">Accueil</span>
+      </a>
+
+      <a routerLink="/ressources"
+         routerLinkActive="active"
+         (click)="navigateWithEffect('/ressources')"
+         class="nav-link">
+        <span class="nav-icon">📚</span>
+        <span class="nav-text">Ressources</span>
+      </a>
+
+      <a routerLink="/activites"
+         routerLinkActive="active"
+         (click)="navigateWithEffect('/activites')"
+         class="nav-link">
+        <span class="nav-icon">🎯</span>
+        <span class="nav-text">Activités</span>
+      </a>
+      <a routerLink="/user"
+         routerLinkActive="active"
+         (click)="navigateWithEffect('/user')"
+         class="nav-link">
+        <span class="nav-icon">👤</span>
+        <span class="nav-text"></span>
+      </a>
+      <a *ngIf="isAdmin"
+        routerLink="/admin"
+         routerLinkActive="active"
+         (click)="navigateWithEffect('/admin')"
+         class="nav-link">
+        <span class="nav-icon">Admin👤</span>
+        <span class="nav-text"></span>
+      </a>
+    </div>
+  </div>
+
+  <main class="main" [@routeAnimations]="prepareRoute(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
+  </main>
+
+  <!-- Overlay pour fermer le menu mobile -->
+  <div class="menu-overlay"
+       *ngIf="menuOpen"
+       (click)="closeMenu()"
+       @pageLoader>
   </div>
 </div>
-<main class="main">
-  <router-outlet></router-outlet>
-</main>
+<footer>
+  <div class="legal-links">
+    <a routerLink="/PrivacyPolicy">Politique de Confidentialité</a>
+    <a routerLink="/DataProtection">Protection des Données</a>
+  </div>
+  <div class="footer-info">
+    © 2025 Votre Société. Tous droits réservés.
+  </div>
+</footer>

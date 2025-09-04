@@ -1,0 +1,643 @@
+<div class="terms-container">
+  <div class="header">
+    <h1>Conditions Générales d'Utilisation</h1>
+    <div class="header-info">
+      <p class="last-updated">Dernière mise à jour : {{ lastUpdated }}</p>
+      <p class="effective-date">Date d'entrée en vigueur : {{ effectiveDate }}</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-download" (click)="downloadTerms()">
+        <i class="icon-download"></i>
+        Télécharger en PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+    <nav class="table-of-contents">
+      <h3>Sommaire</h3>
+      <ul>
+        <li><a (click)="scrollToSection('acceptance')" href="javascript:void(0)">1. Acceptation des conditions</a></li>
+        <li><a (click)="scrollToSection('definitions')" href="javascript:void(0)">2. Définitions</a></li>
+        <li><a (click)="scrollToSection('service-description')" href="javascript:void(0)">3. Description du service</a></li>
+        <li><a (click)="scrollToSection('account-registration')" href="javascript:void(0)">4. Inscription et compte</a></li>
+        <li><a (click)="scrollToSection('user-obligations')" href="javascript:void(0)">5. Obligations de l'utilisateur</a></li>
+        <li><a (click)="scrollToSection('prohibited-uses')" href="javascript:void(0)">6. Utilisations interdites</a></li>
+        <li><a (click)="scrollToSection('intellectual-property')" href="javascript:void(0)">7. Propriété intellectuelle</a></li>
+        <li><a (click)="scrollToSection('payment-billing')" href="javascript:void(0)">8. Paiement et facturation</a></li>
+        <li><a (click)="scrollToSection('service-availability')" href="javascript:void(0)">9. Disponibilité du service</a></li>
+        <li><a (click)="scrollToSection('limitation-liability')" href="javascript:void(0)">10. Limitation de responsabilité</a></li>
+        <li><a (click)="scrollToSection('termination')" href="javascript:void(0)">11. Résiliation</a></li>
+        <li><a (click)="scrollToSection('applicable-law')" href="javascript:void(0)">12. Droit applicable</a></li>
+        <li><a (click)="scrollToSection('modifications')" href="javascript:void(0)">13. Modifications</a></li>
+        <li><a (click)="scrollToSection('contact')" href="javascript:void(0)">14. Contact</a></li>
+      </ul>
+    </nav>
+
+    <section id="acceptance" class="section">
+      <h2>1. Acceptation des conditions</h2>
+      <div class="important-notice">
+        <h3>⚠️ Important</h3>
+        <p>
+          En accédant à notre service et en l'utilisant, vous acceptez d'être lié par ces
+          conditions générales d'utilisation. Si vous n'acceptez pas ces conditions,
+          vous ne devez pas utiliser notre service.
+        </p>
+      </div>
+      <p>
+        Ces conditions constituent un accord légalement contraignant entre vous ("Utilisateur")
+        et notre société concernant votre utilisation de notre service. Veuillez les lire
+        attentivement avant d'utiliser notre plateforme.
+      </p>
+      <div class="acceptance-actions">
+        <button class="btn-accept" (click)="acceptTerms()">
+          J'accepte les conditions d'utilisation
+        </button>
+      </div>
+    </section>
+
+    <section id="definitions" class="section">
+      <h2>2. Définitions</h2>
+      <div class="definitions-list">
+        <div class="definition-item">
+          <h3>"Service"</h3>
+          <p>Désigne l'ensemble des fonctionnalités, contenus et services proposés sur notre plateforme.</p>
+        </div>
+        <div class="definition-item">
+          <h3>"Utilisateur"</h3>
+          <p>Toute personne physique ou morale qui accède et utilise notre service.</p>
+        </div>
+        <div class="definition-item">
+          <h3>"Compte"</h3>
+          <p>Espace personnel créé par l'utilisateur pour accéder aux fonctionnalités du service.</p>
+        </div>
+        <div class="definition-item">
+          <h3>"Contenu utilisateur"</h3>
+          <p>Tout contenu créé, téléchargé ou partagé par l'utilisateur sur notre plateforme.</p>
+        </div>
+        <div class="definition-item">
+          <h3>"Nous" / "Notre société"</h3>
+          <p>L'entité juridique qui exploite et fournit le service.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="service-description" class="section">
+      <h2>3. Description du service</h2>
+      <p>
+        Notre service permet aux utilisateurs d'accéder à une plateforme numérique offrant
+        diverses fonctionnalités incluant mais non limitées à :
+      </p>
+      <div class="service-features">
+        <div class="feature">
+          <h3>📱 Interface utilisateur</h3>
+          <p>Interface web et mobile pour accéder aux fonctionnalités</p>
+        </div>
+        <div class="feature">
+          <h3>💾 Stockage de données</h3>
+          <p>Stockage sécurisé des informations et contenus utilisateur</p>
+        </div>
+        <div class="feature">
+          <h3>🔄 Synchronisation</h3>
+          <p>Synchronisation des données entre différents appareils</p>
+        </div>
+        <div class="feature">
+          <h3>🤝 Collaboration</h3>
+          <p>Outils de partage et de collaboration entre utilisateurs</p>
+        </div>
+      </div>
+      <div class="service-evolution">
+        <h3>Évolution du service</h3>
+        <p>
+          Nous nous réservons le droit de modifier, améliorer ou interrompre tout ou partie
+          du service à tout moment, avec ou sans préavis, afin d'améliorer l'expérience utilisateur
+          ou pour des raisons techniques, légales ou commerciales.
+        </p>
+      </div>
+    </section>
+
+    <section id="account-registration" class="section">
+      <h2>4. Inscription et compte utilisateur</h2>
+      <div class="registration-requirements">
+        <h3>Conditions d'inscription</h3>
+        <ul>
+          <li>Être âgé d'au moins 16 ans ou avoir l'autorisation parentale</li>
+          <li>Fournir des informations exactes et complètes</li>
+          <li>Maintenir la confidentialité de vos identifiants</li>
+          <li>Accepter la responsabilité de toute activité sur votre compte</li>
+        </ul>
+      </div>
+
+      <div class="account-security">
+        <h3>Sécurité du compte</h3>
+        <div class="security-grid">
+          <div class="security-item">
+            <h4>🔐 Mot de passe fort</h4>
+            <p>Utilisez un mot de passe unique et complexe</p>
+          </div>
+          <div class="security-item">
+            <h4>🔒 Authentification double</h4>
+            <p>Activez l'authentification à deux facteurs</p>
+          </div>
+          <div class="security-item">
+            <h4>📱 Appareil sécurisé</h4>
+            <p>Accédez depuis des appareils de confiance</p>
+          </div>
+          <div class="security-item">
+            <h4>🚨 Signalement</h4>
+            <p>Signalez immédiatement tout accès suspect</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="user-obligations" class="section">
+      <h2>5. Obligations de l'utilisateur</h2>
+      <p>En utilisant notre service, vous vous engagez à :</p>
+
+      <div class="obligations-categories">
+        <div class="obligation-category">
+          <h3>📋 Respect des conditions</h3>
+          <ul>
+            <li>Respecter ces conditions d'utilisation</li>
+            <li>Se conformer aux lois et réglementations applicables</li>
+            <li>Respecter les droits des autres utilisateurs</li>
+          </ul>
+        </div>
+
+        <div class="obligation-category">
+          <h3>💼 Usage approprié</h3>
+          <ul>
+            <li>Utiliser le service uniquement à des fins légales</li>
+            <li>Ne pas tenter de contourner les mesures de sécurité</li>
+            <li>Ne pas surcharger nos systèmes</li>
+          </ul>
+        </div>
+
+        <div class="obligation-category">
+          <h3>📊 Contenu responsable</h3>
+          <ul>
+            <li>S'assurer que votre contenu ne viole aucun droit</li>
+            <li>Ne pas publier de contenu illégal ou offensant</li>
+            <li>Respecter les droits de propriété intellectuelle</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="prohibited-uses" class="section">
+      <h2>6. Utilisations interdites</h2>
+      <div class="prohibited-warning">
+        <h3>🚫 Strictement interdit</h3>
+        <p>Les utilisations suivantes de notre service sont formellement interdites :</p>
+      </div>
+
+      <div class="prohibited-grid">
+        <div class="prohibited-item danger">
+          <h3>🔒 Activités illégales</h3>
+          <ul>
+            <li>Violation de lois ou réglementations</li>
+            <li>Fraude ou escroquerie</li>
+            <li>Blanchiment d'argent</li>
+            <li>Activités terroristes</li>
+          </ul>
+        </div>
+
+        <div class="prohibited-item warning">
+          <h3>💻 Attaques techniques</h3>
+          <ul>
+            <li>Piratage ou tentative d'intrusion</li>
+            <li>Distribution de malware</li>
+            <li>Attaques par déni de service</li>
+            <li>Ingénierie sociale</li>
+          </ul>
+        </div>
+
+        <div class="prohibited-item info">
+          <h3>📝 Contenu inapproprié</h3>
+          <ul>
+            <li>Contenu haineux ou discriminatoire</li>
+            <li>Harcèlement ou intimidation</li>
+            <li>Contenu pornographique</li>
+            <li>Désinformation délibérée</li>
+          </ul>
+        </div>
+
+        <div class="prohibited-item secondary">
+          <h3>⚖️ Violations de droits</h3>
+          <ul>
+            <li>Violation de propriété intellectuelle</li>
+            <li>Usurpation d'identité</li>
+            <li>Violation de la vie privée</li>
+            <li>Contrefaçon</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="violation-consequences">
+        <h3>Conséquences des violations</h3>
+        <p>
+          Toute violation de ces interdictions peut entraîner la suspension ou la résiliation
+          immédiate de votre compte, sans préavis ni remboursement, et peut faire l'objet
+          de poursuites judiciaires.
+        </p>
+        <button class="btn-report" (click)="reportViolation()">
+          Signaler une violation
+        </button>
+      </div>
+    </section>
+
+    <section id="intellectual-property" class="section">
+      <h2>7. Propriété intellectuelle</h2>
+
+      <div class="ip-sections">
+        <div class="ip-section">
+          <h3>🏢 Nos droits</h3>
+          <p>
+            Tous les éléments du service (logiciels, textes, images, sons, vidéos, bases de données, etc.)
+            sont protégés par des droits de propriété intellectuelle et appartiennent à notre société
+            ou à nos partenaires licenciés.
+          </p>
+          <div class="protected-elements">
+            <span class="element">Interface utilisateur</span>
+            <span class="element">Algorithmes</span>
+            <span class="element">Base de données</span>
+            <span class="element">Marques</span>
+            <span class="element">Logos</span>
+            <span class="element">Documentation</span>
+          </div>
+        </div>
+
+        <div class="ip-section">
+          <h3>👤 Vos droits</h3>
+          <p>
+            Vous conservez tous les droits de propriété intellectuelle sur le contenu que vous créez
+            et partagez via notre service. Cependant, vous nous accordez une licence pour utiliser,
+            modifier et distribuer ce contenu dans le cadre de la fourniture du service.
+          </p>
+
+          <div class="license-terms">
+            <h4>Licence accordée</h4>
+            <ul>
+              <li>Non exclusive et révocable</li>
+              <li>Limitée aux besoins du service</li>
+              <li>Incluant le droit de sous-licencier à nos prestataires</li>
+              <li>Prenant fin à la suppression du contenu</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="dmca-section">
+        <h3>📧 Signalement de violation de droits d'auteur</h3>
+        <p>
+          Si vous pensez qu'un contenu sur notre service viole vos droits d'auteur,
+          contactez-nous avec les informations suivantes :
+        </p>
+        <ul>
+          <li>Description de l'œuvre protégée</li>
+          <li>Localisation du contenu litigieux</li>
+          <li>Vos coordonnées complètes</li>
+          <li>Déclaration de bonne foi</li>
+          <li>Signature électronique</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="payment-billing" class="section">
+      <h2>8. Paiement et facturation</h2>
+
+      <div class="pricing-info">
+        <h3>💰 Tarification</h3>
+        <div class="pricing-tiers">
+          <div class="tier">
+            <h4>Gratuit</h4>
+            <p>Fonctionnalités de base limitées</p>
+          </div>
+          <div class="tier featured">
+            <h4>Premium</h4>
+            <p>Accès complet aux fonctionnalités</p>
+          </div>
+          <div class="tier">
+            <h4>Entreprise</h4>
+            <p>Solutions personnalisées</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="payment-terms">
+        <h3>💳 Conditions de paiement</h3>
+        <div class="payment-grid">
+          <div class="payment-item">
+            <h4>Facturation</h4>
+            <ul>
+              <li>Paiement mensuel ou annuel</li>
+              <li>Facturation automatique</li>
+              <li>Taxes applicables incluses</li>
+            </ul>
+          </div>
+
+          <div class="payment-item">
+            <h4>Méthodes acceptées</h4>
+            <ul>
+              <li>Cartes bancaires (Visa, Mastercard)</li>
+              <li>Virements bancaires</li>
+              <li>Portefeuilles électroniques</li>
+            </ul>
+          </div>
+
+          <div class="payment-item">
+            <h4>Remboursements</h4>
+            <ul>
+              <li>Politique de remboursement de 30 jours</li>
+              <li>Remboursement au prorata en cas de résiliation</li>
+              <li>Traitement sous 5-10 jours ouvrés</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="billing-disputes">
+        <h3>⚖️ Litiges de facturation</h3>
+        <p>
+          En cas de litige concernant la facturation, contactez notre service client dans les 60 jours
+          suivant la date de facturation. Nous nous efforçons de résoudre tous les litiges de manière équitable.
+        </p>
+      </div>
+    </section>
+
+    <section id="service-availability" class="section">
+      <h2>9. Disponibilité du service</h2>
+
+      <div class="sla-info">
+        <h3>📊 Engagements de service</h3>
+        <div class="sla-metrics">
+          <div class="metric">
+            <h4>99.9%</h4>
+            <p>Disponibilité garantie</p>
+          </div>
+          <div class="metric">
+            <h4>24/7</h4>
+            <p>Surveillance continue</p>
+          </div>
+          <div class="metric">
+            <h4>&lt; 2s</h4>
+            <p>Temps de réponse moyen</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="maintenance-info">
+        <h3>🔧 Maintenance</h3>
+        <p>
+          Nous nous réservons le droit d'effectuer des maintenances programmées ou d'urgence.
+          Les maintenances programmées sont annoncées au moins 48h à l'avance.
+        </p>
+
+        <div class="maintenance-types">
+          <div class="maintenance-type">
+            <h4>Maintenance programmée</h4>
+            <ul>
+              <li>Notification 48h à l'avance</li>
+              <li>Généralement en dehors des heures de pointe</li>
+              <li>Durée limitée (2-4 heures maximum)</li>
+            </ul>
+          </div>
+
+          <div class="maintenance-type">
+            <h4>Maintenance d'urgence</h4>
+            <ul>
+              <li>Notification immédiate</li>
+              <li>Nécessaire pour la sécurité ou la stabilité</li>
+              <li>Durée minimale nécessaire</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="limitation-liability" class="section">
+      <h2>10. Limitation de responsabilité</h2>
+
+      <div class="liability-warning">
+        <h3>⚠️ Limitations importantes</h3>
+        <p>
+          Dans les limites autorisées par la loi, notre responsabilité est limitée dans les cas suivants :
+        </p>
+      </div>
+
+      <div class="liability-categories">
+        <div class="liability-item">
+          <h3>💼 Utilisation du service</h3>
+          <ul>
+            <li>Le service est fourni "en l'état"</li>
+            <li>Aucune garantie de fonctionnement ininterrompu</li>
+            <li>Pas de garantie de résultats spécifiques</li>
+          </ul>
+        </div>
+
+        <div class="liability-item">
+          <h3>💰 Dommages</h3>
+          <ul>
+            <li>Limitation aux montants payés dans les 12 derniers mois</li>
+            <li>Exclusion des dommages indirects</li>
+            <li>Exclusion de la perte de profits</li>
+          </ul>
+        </div>
+
+        <div class="liability-item">
+          <h3>🔗 Contenu tiers</h3>
+          <ul>
+            <li>Pas de responsabilité pour le contenu utilisateur</li>
+            <li>Pas de responsabilité pour les liens externes</li>
+            <li>Pas de responsabilité pour les services tiers</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="force-majeure">
+        <h3>🌪️ Force majeure</h3>
+        <p>
+          Notre responsabilité est exclue en cas d'événements de force majeure incluant mais non limités à :
+          catastrophes naturelles, guerres, cyber-attaques à grande échelle, pandémies, ou toute autre
+          circonstance indépendante de notre volonté.
+        </p>
+      </div>
+    </section>
+
+    <section id="termination" class="section">
+      <h2>11. Résiliation</h2>
+
+      <div class="termination-types">
+        <div class="termination-type">
+          <h3>👤 Résiliation par l'utilisateur</h3>
+          <ul>
+            <li>Possible à tout moment depuis les paramètres du compte</li>
+            <li>Prise d'effet immédiate</li>
+            <li>Possibilité d'exporter vos données avant résiliation</li>
+            <li>Remboursement au prorata des montants non utilisés</li>
+          </ul>
+        </div>
+
+        <div class="termination-type">
+          <h3>🏢 Résiliation par notre société</h3>
+          <ul>
+            <li>En cas de violation des conditions d'utilisation</li>
+            <li>En cas de non-paiement après mise en demeure</li>
+            <li>Pour des raisons de sécurité</li>
+            <li>Avec préavis de 30 jours sauf cas d'urgence</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="post-termination">
+        <h3>📁 Après la résiliation</h3>
+        <div class="post-termination-grid">
+          <div class="post-item">
+            <h4>Données utilisateur</h4>
+            <p>Conservation pendant 30 jours puis suppression définitive</p>
+          </div>
+          <div class="post-item">
+            <h4>Accès au service</h4>
+            <p>Suspension immédiate de l'accès</p>
+          </div>
+          <div class="post-item">
+            <h4>Obligations financières</h4>
+            <p>Paiement des sommes dues jusqu'à la résiliation</p>
+          </div>
+          <div class="post-item">
+            <h4>Propriété intellectuelle</h4>
+            <p>Fin de la licence d'utilisation de nos contenus</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="applicable-law" class="section">
+      <h2>12. Droit applicable et juridictions</h2>
+
+      <div class="legal-jurisdiction">
+        <h3>⚖️ Droit applicable</h3>
+        <p>
+          Ces conditions générales d'utilisation sont régies par le droit français.
+          Toute disposition qui serait déclarée nulle ou non applicable n'affectera pas
+          la validité des autres dispositions.
+        </p>
+      </div>
+
+      <div class="dispute-resolution">
+        <h3>🏛️ Résolution des litiges</h3>
+        <div class="resolution-steps">
+          <div class="step">
+            <h4>1. Négociation amiable</h4>
+            <p>Tentative de résolution à l'amiable dans les 30 jours</p>
+          </div>
+          <div class="step">
+            <h4>2. Médiation</h4>
+            <p>Recours à un médiateur agréé si nécessaire</p>
+          </div>
+          <div class="step">
+            <h4>3. Tribunaux compétents</h4>
+            <p>Tribunaux de Paris en cas d'échec des étapes précédentes</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="consumer-rights">
+        <h3>🛡️ Droits des consommateurs</h3>
+        <p>
+          Si vous êtes un consommateur, vous bénéficiez des protections légales en vigueur
+          dans votre pays de résidence, qui ne peuvent être exclues par ces conditions.
+        </p>
+      </div>
+    </section>
+
+    <section id="modifications" class="section">
+      <h2>13. Modifications des conditions</h2>
+
+      <div class="modification-process">
+        <h3>📝 Processus de modification</h3>
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="step-number">1</div>
+            <h4>Notification</h4>
+            <p>Notification par email et sur la plateforme</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">2</div>
+            <h4>Préavis</h4>
+            <p>Délai de 30 jours avant entrée en vigueur</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">3</div>
+            <h4>Acceptation</h4>
+            <p>Poursuite d'utilisation = acceptation tacite</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">4</div>
+            <h4>Refus</h4>
+            <p>Droit de résiliation sans frais</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="version-history">
+        <h3>📚 Historique des versions</h3>
+        <p>
+          Nous conservons un historique des versions précédentes de nos conditions d'utilisation.
+          Vous pouvez consulter les versions antérieures sur demande.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>14. Contact et assistance</h2>
+
+      <div class="contact-grid">
+        <div class="contact-method">
+          <h3>📧 Support général</h3>
+          <div class="contact-details">
+            <p><strong>Temps de réponse :</strong> 24-48h</p>
+            <p><strong>Langues :</strong> Français, Anglais</p>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <h3>⚖️ Questions juridiques</h3>
+          <div class="contact-details">
+            <p><strong>Temps de réponse :</strong> 5-7 jours</p>
+            <p><strong>Objet :</strong> Questions sur les conditions</p>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <h3>💰 Facturation</h3>
+          <div class="contact-details">
+            <p><strong>Temps de réponse :</strong> 24h</p>
+            <p><strong>Urgence :</strong> +33 1 23 45 67 89</p>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <h3>🚨 Signalements</h3>
+          <div class="contact-details">
+            <p><strong>Temps de réponse :</strong> 2-4h</p>
+            <p><strong>Urgence :</strong> Formulaire en ligne</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-info">
+        <h3>🏢 Informations légales</h3>
+        <div class="legal-info">
+          <p><strong>Raison sociale :</strong> Votre Société SAS</p>
+          <p><strong>Siège social :</strong> 123 Rue du Commerce, 75001 Paris, France</p>
+          <p><strong>SIRET :</strong> 123 456 789 00012</p>
+          <p><strong>RCS :</strong> Paris B 123 456 789</p>
+          <p><strong>Capital social :</strong> 100 000 €</p>
+          <p><strong>TVA :</strong> FR12345678901</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
